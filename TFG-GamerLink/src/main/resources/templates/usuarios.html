@@ -33,18 +33,18 @@
 			<table class="table table-dark">
 				<thead>
 					<tr>
+						<th scope="col">Foto perfil</th>
 						<th scope="col">Nombre</th>
 						<th scope="col">Email</th>
-						<th scope="col">Avatar_URL</th>
 						<th scope="col">Biografía</th>
 						<th scope="col">Acciones</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="usuario : ${usuarios}">
+						<td><img th:if="${usuario.avatar_url}" th:src="${'/usuarios/uploads/' + ${usuario.avatar_url}}" width="50" height="50" /></td>
 						<th th:text="${usuario.nombre}"></th>
 						<td th:text="${usuario.correo}"></td>
-						<td th:text="${usuario.avatar_url}"></td>
 						<td th:text="${usuario.biografia}"></td>
 						<td><a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}"
 							class="btn btn-info">Editar</a> <a
