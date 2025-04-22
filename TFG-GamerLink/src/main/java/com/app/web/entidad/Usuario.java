@@ -1,16 +1,34 @@
 package com.app.web.entidad;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+@Data
+@NoArgsConstructor
+public class Usuario implements UserDetails{
 	
+	private static final long serialVersionUID = 5853109288178230131L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -29,21 +47,22 @@ public class Usuario {
 	
 	@Column(name = "biografia",nullable = true,length = 200)
 	private String biografia;
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "usuarios_roles", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id"))
+	private List<Roles> roles = new ArrayList<>();
 	public Usuario() {
 		
 	}
+	
 	public Usuario( String nombre, String correo, String contrasena_hash, String avatar_url,
 			String biografia) {
 		super();
 		this.nombre = nombre;
 		this.correo = correo;
 		this.contrasena_hash = contrasena_hash;
-		if (avatar_url == null || avatar_url.isEmpty()) {
-			this.avatar_url = "avatar-defecto.png"; // Valor por defecto
-		} else {
-			this.avatar_url = avatar_url;
-			
-		}
+		this.avatar_url = avatar_url;
 		this.biografia = biografia;
 	}
 	public Long getId() {
@@ -81,6 +100,31 @@ public class Usuario {
 	}
 	public void setBiografia(String biografia) {
 		this.biografia = biografia;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		//return roles;
+		return roles.stream().map(rol -> new GrantedAuthority() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getAuthority() {
+				return rol.getNombre();
+			}
+		}).toList();
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
