@@ -41,17 +41,19 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="usuario : ${usuarios}">
-						<td><img th:if="${usuario.avatar_url}" th:src="${'/usuarios/uploads/' + ${usuario.avatar_url}}" width="50" height="50" /></td>
-						<th th:text="${usuario.nombre}"></th>
-						<td th:text="${usuario.correo}"></td>
-						<td th:text="${usuario.biografia}"></td>
-						<td><a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}"
-							class="btn btn-info">Editar</a> <a
-							th:href="@{/usuarios/borrar/{id}(id=${usuario.id})}"
-							class="btn btn-danger">Eliminar</a></td>
-					</tr>
-				</tbody>
+                    <tr th:each="usuario : ${usuarios}">
+                        <td><img th:src="@{/uploads/{avatar_url}(avatar_url=${usuario.avatar_url})}"
+                            class="img-thumbnail" width="100" height="100"></td>
+                        <td th:text="${usuario.nombre}">Nombre</td>
+                        <td th:text="${usuario.correo}">Email</td>
+                        <td th:text="${usuario.biografia}">Biografía</td>
+                        <td>
+                            <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}"
+                                class="btn btn-warning">Editar</a> <a
+                                th:href="@{/usuarios/borrar/{id}(id=${usuario.id})}"
+                                class="btn btn-danger">Borrar</a>
+                        </td>
+                    </tr>
 			</table>
 		</div>
 </body>

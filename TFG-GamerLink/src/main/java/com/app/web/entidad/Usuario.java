@@ -38,7 +38,12 @@ public class Usuario {
 		this.nombre = nombre;
 		this.correo = correo;
 		this.contrasena_hash = contrasena_hash;
-		this.avatar_url = avatar_url;
+		if (avatar_url == null || avatar_url.isEmpty()) {
+			this.avatar_url = "avatar-defecto.png"; // Valor por defecto
+		} else {
+			this.avatar_url = avatar_url;
+			
+		}
 		this.biografia = biografia;
 	}
 	public Long getId() {

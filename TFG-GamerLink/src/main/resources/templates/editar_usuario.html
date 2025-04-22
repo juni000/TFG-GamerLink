@@ -22,41 +22,40 @@
 
 
 	<div class="container">
-		<div class="row">
-			<div
-				class="col-lg-6 col-md-6 col-sm-6 container justify-content-center">
-				<h1 class="text-center">Registro de Usuarios</h1>
-				<div class="card-body">
-					<form action="#" th:action="@{/usuarios/{id}(id=${usuario.id})}"
-						th:object="${usuario}" method="post">
-						<div class="form-group">
-							<label for="nombre">Nombre : </label> <input type="text"
-								class="form-control" name="nombre" id="nombre"
-								th:field="*{nombre}" placeholder="Nombre" required>
-						</div>
-						<div class="form-group">
-							<label for="contrasena_hash">Contraseña : </label> <input
-								type="password" class="form-control" name="contrasena_hash"
-								id="contrasena_hash" th:field="*{contrasena_hash}"
-								placeholder="Contraseña" required>
-						</div>
-						<div class="form-group">
-							<label for="correo">Correo : </label> <input type="email"
-								class="form-control" name="correo" id="correo"
-								th:field="*{correo}" placeholder="Correo" required>
-						</div>
-						<div class="form-group">
-							<label for="biografia">Biografía : </label> <input type="text"
-								class="form-control" name="biografia" id="biografia"
-								th:field="*{biografia}" placeholder="Biografía" required>
-						</div>
-						<div class="box-footer">
-							<button class="btn btn-primary">Registrar</button>
-						</div>
-					</form>
+			<div class="row">
+				<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center">
+					<h1 class="text-center">Editar de Usuario</h1>
+					<div class="card-body">
+						<form action="#" th:action="@{/usuarios/nuevo}" method="post">
+							<div class="form-group">
+								<label for="nombre">Nombre : </label> <input type="text" class="form-control" name="nombre"
+									id="nombre" th:field="*{nombre}" placeholder="Nombre" required>
+							</div>
+							<div class="form-group">
+								<label for="contrasena_hash">Contraseña : </label> <input type="password"
+									class="form-control" name="contrasena_hash" id="contrasena_hash"
+									th:field="*{contrasena_hash}" placeholder="Contraseña" required>
+							</div>
+							<div class="form-group">
+								<label for="correo">Correo : </label> <input type="email" class="form-control" name="correo"
+									id="correo" th:field="*{correo}" placeholder="Correo" required>
+							</div>
+							<div class="form-group">
+								<label for="biografia">Biografía : </label> <input type="text" class="form-control"
+									name="biografia" id="biografia" th:field="*{biografia}" placeholder="Biografía"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="file">Avatar:</label> <input type="file" id="file" th:field="*{avatar_url}"
+									name="file" accept=".jpg, .jpeg, .png, .gif" class="form-control-file">
+							</div>
+							<div class="box-footer">
+								<button type="submit" class="btn btn-primary">Registrar</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
 </html>

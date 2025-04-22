@@ -38,7 +38,7 @@ public class UsuarioControlador {
 		modelo.addAttribute("usuarios", servicio.listarTodosUsuarios());
 		return "usuarios";
 	}
-
+	
 	@GetMapping({ "/usuarios/nuevo" })
 	public String formularioCrearUsuario(Model modelo) {
 		Usuario usuario = new Usuario();
@@ -46,29 +46,50 @@ public class UsuarioControlador {
 		return "crear_usuario";
 	}
 
-	@PostMapping({ "/usuarios" })
+	@PostMapping({ "/usuarios/nuevo" })
 	public String guardarUsuario(@Validated @ModelAttribute("usuario") Usuario usuario, BindingResult resultado, Model modelo,
-			@RequestParam("file") MultipartFile archivo, RedirectAttributes atributos, SessionStatus status) {
+			@RequestParam("file") MultipartFile archivo, RedirectAttributes atributos) {
 		if (resultado.hasErrors()) {
 			return "crear_usuario";
 		} else {
 			if (!archivo.isEmpty()) {
-				if (usuario.getId() != null && usuario.getId() > 0 && usuario.getAvatar_url() != null
-						&& usuario.getAvatar_url().length() > 0) {
-					servicioImagen.eliminar(usuario.getAvatar_url());
-				}
 				try {
 					String nombreArchivo = servicioImagen.copiar(archivo);
 					usuario.setAvatar_url(nombreArchivo);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				status.setComplete();
-			}	
+			}else {
+				usuario.setAvatar_url("avatar-defecto.png");
+			}
+			servicio.guardarUsuario(usuario);
+			atributos.addFlashAttribute("mensaje", "El usuario ha sido creado con éxito");
+			return "redirect:/usuarios";
 		}
-		return "redirect:/usuarios";
 	}
+//	@PostMapping({ "/usuarios" })
+//	public String guardarUsuario(@Validated @ModelAttribute("usuario") Usuario usuario, BindingResult resultado, Model modelo,
+//			@RequestParam("file") MultipartFile archivo, RedirectAttributes atributos, SessionStatus status) {
+//		if (resultado.hasErrors()) {
+//			return "crear_usuario";
+//		} else {
+//			if (!archivo.isEmpty()) {
+//				if (usuario.getId() != null && usuario.getId() > 0 && usuario.getAvatar_url() != null
+//						&& usuario.getAvatar_url().length() > 0) {
+//					servicioImagen.eliminar(usuario.getAvatar_url());
+//				}
+//				try {
+//					String nombreArchivo = servicioImagen.copiar(archivo);
+//					usuario.setAvatar_url(nombreArchivo);
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				status.setComplete();
+//			}	
+//		}
+//		return "redirect:/usuarios";
+//	}
 
 	@GetMapping({ "/usuarios/editar/{id}" })
 	public String formularioEditarUsuario(@PathVariable Long id, Model modelo) {
