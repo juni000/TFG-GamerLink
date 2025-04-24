@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthControlador {
 	
-	private final AuthServicio authServicio = new AuthServicio();
+	private final AuthServicio authServicio;
 	
 	@PostMapping(value = "login")
 	public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {

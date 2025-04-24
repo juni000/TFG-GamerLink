@@ -9,5 +9,5 @@ import com.app.web.entidad.Usuario;
 
 @Repository
 public interface UsuarioIRepositorio extends JpaRepository<Usuario, Long>{
-	Optional<Usuario> findByUsername(String username);
+	Optional<Usuario> findByNombre(String nombre);
 }

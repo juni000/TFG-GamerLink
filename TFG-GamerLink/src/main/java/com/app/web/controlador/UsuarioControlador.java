@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,13 +17,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.app.web.entidad.Usuario;
 import com.app.web.servicio.ImagenIServicio;
 import com.app.web.servicio.UsuarioIServicio;
+
+import auth.AuthServicio;
+import auth.RegisterRequest;
+import jwt.JwtServicio;
 
 @Controller
 public class UsuarioControlador {
@@ -45,8 +49,21 @@ public class UsuarioControlador {
 		modelo.addAttribute("usuario", usuario);
 		return "crear_usuario";
 	}
-
+	
 	@PostMapping({ "/usuarios/nuevo" })
+	public String guardarUsuario(@ModelAttribute("usuario") Usuario usuario, Model modelo) {
+		RegisterRequest registerRequest = new RegisterRequest();
+		registerRequest.setNombre(usuario.getNombre());
+		registerRequest.setCorreo(usuario.getCorreo());
+		registerRequest.setContrasena_hash(usuario.getContrasena_hash());
+		registerRequest.setAvatar_url(usuario.getAvatar_url());
+		registerRequest.setBiografia(usuario.getBiografia());
+		AuthServicio authServicio = new AuthServicio(null, null);
+		authServicio.register(registerRequest);
+		return "redirect:/usuarios";
+	}
+	
+	@PostMapping({ "/usuarios/123" })
 	public String guardarUsuario(@Validated @ModelAttribute("usuario") Usuario usuario, BindingResult resultado, Model modelo,
 			@RequestParam("file") MultipartFile archivo, RedirectAttributes atributos) {
 		if (resultado.hasErrors()) {

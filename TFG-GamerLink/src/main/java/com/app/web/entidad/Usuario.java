@@ -1,30 +1,32 @@
 package com.app.web.entidad;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+
 @Table(name = "usuarios")
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Usuario implements UserDetails{
 	
 	private static final long serialVersionUID = 5853109288178230131L;
@@ -48,13 +50,9 @@ public class Usuario implements UserDetails{
 	@Column(name = "biografia",nullable = true,length = 200)
 	private String biografia;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "usuarios_roles", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
-		inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id"))
-	private List<Roles> roles = new ArrayList<>();
-	public Usuario() {
-		
-	}
+	@Enumerated(EnumType.STRING)
+	Roles rol;
+	
 	
 	public Usuario( String nombre, String correo, String contrasena_hash, String avatar_url,
 			String biografia) {
@@ -102,29 +100,21 @@ public class Usuario implements UserDetails{
 		this.biografia = biografia;
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		//return roles;
-		return roles.stream().map(rol -> new GrantedAuthority() {
-			private static final long serialVersionUID = 1L;
 
-			@Override
-			public String getAuthority() {
-				return rol.getNombre();
-			}
-		}).toList();
-	}
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return contrasena_hash;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return nombre;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority((rol.name())));
 	}
 	
 	
