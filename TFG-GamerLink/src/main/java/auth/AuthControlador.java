@@ -12,18 +12,22 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthControlador {
-	
+
 	private final AuthServicio authServicio;
-	
-	@PostMapping(value = "login")
+
+	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
 		return ResponseEntity.ok(authServicio.login(loginRequest));
 	}
-	 @PostMapping(value = "register")
-	 public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest) {
-		 return ResponseEntity.ok(authServicio.register(registerRequest));
-	 }	@PostMapping(value = "logout")
-	public String logout() {
-		return "logout";
+
+	@PostMapping("/register")
+	public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest) {
+		return ResponseEntity.ok(authServicio.register(registerRequest));
+	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<String> logout() {
+		return ResponseEntity.ok("Logout exitoso (por el cliente).");
 	}
 }
+

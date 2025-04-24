@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,10 +24,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.app.web.entidad.Usuario;
 import com.app.web.servicio.ImagenIServicio;
 import com.app.web.servicio.UsuarioIServicio;
-
-import auth.AuthServicio;
-import auth.RegisterRequest;
-import jwt.JwtServicio;
 
 @Controller
 public class UsuarioControlador {
@@ -49,41 +46,51 @@ public class UsuarioControlador {
 		modelo.addAttribute("usuario", usuario);
 		return "crear_usuario";
 	}
-	
-	@PostMapping({ "/usuarios/nuevo" })
-	public String guardarUsuario(@ModelAttribute("usuario") Usuario usuario, Model modelo) {
-		RegisterRequest registerRequest = new RegisterRequest();
-		registerRequest.setNombre(usuario.getNombre());
-		registerRequest.setCorreo(usuario.getCorreo());
-		registerRequest.setContrasena_hash(usuario.getContrasena_hash());
-		registerRequest.setAvatar_url(usuario.getAvatar_url());
-		registerRequest.setBiografia(usuario.getBiografia());
-		AuthServicio authServicio = new AuthServicio(null, null);
-		authServicio.register(registerRequest);
-		return "redirect:/usuarios";
+	@GetMapping({ "/login_usuario" })
+	public String formularioIniciarSesion(Model modelo) {
+		Usuario usuario = new Usuario();
+		modelo.addAttribute("usuario", usuario);
+		return "login_usuario";
 	}
 	
-	@PostMapping({ "/usuarios/123" })
-	public String guardarUsuario(@Validated @ModelAttribute("usuario") Usuario usuario, BindingResult resultado, Model modelo,
-			@RequestParam("file") MultipartFile archivo, RedirectAttributes atributos) {
-		if (resultado.hasErrors()) {
-			return "crear_usuario";
-		} else {
-			if (!archivo.isEmpty()) {
-				try {
-					String nombreArchivo = servicioImagen.copiar(archivo);
-					usuario.setAvatar_url(nombreArchivo);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}else {
-				usuario.setAvatar_url("avatar-defecto.png");
-			}
-			servicio.guardarUsuario(usuario);
-			atributos.addFlashAttribute("mensaje", "El usuario ha sido creado con éxito");
-			return "redirect:/usuarios";
-		}
+	@PostMapping("/usuarios/nuevo")
+	public String guardarUsuario(@Validated @ModelAttribute("usuario") Usuario usuario,
+	                             BindingResult resultado,
+	                             @RequestParam("file") MultipartFile archivo,
+	                             RedirectAttributes atributos) {
+	    if (resultado.hasErrors()) {
+	        return "crear_usuario";
+	    }
+
+	    try {
+	        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			// Cifrar la contraseña antes de guardar el usuario
+	        String contrasenaCifrada = passwordEncoder.encode(usuario.getContrasena_hash()); // Cifra la contraseña
+
+	        // Asigna la contraseña cifrada al objeto usuario
+	        usuario.setContrasena_hash(contrasenaCifrada);
+
+	        // Lógica para manejar la imagen del usuario
+	        if (!archivo.isEmpty()) {
+	            String nombreArchivo = servicioImagen.copiar(archivo);
+	            usuario.setAvatar_url(nombreArchivo);
+	        } else {
+	            usuario.setAvatar_url("avatar_defecto.png");
+	        }
+
+	        // Guarda el usuario con la contraseña cifrada
+	        servicio.guardarUsuario(usuario);
+	        atributos.addFlashAttribute("mensaje", "El usuario ha sido creado con éxito");
+
+	    } catch (IOException e) {
+	        atributos.addFlashAttribute("error", "Error al subir imagen.");
+	        return "crear_usuario";
+	    }
+
+	    return "redirect:/login_usuario"; // Redirige a la página de inicio de sesión después de crear el usuario
 	}
+
+	
 //	@PostMapping({ "/usuarios" })
 //	public String guardarUsuario(@Validated @ModelAttribute("usuario") Usuario usuario, BindingResult resultado, Model modelo,
 //			@RequestParam("file") MultipartFile archivo, RedirectAttributes atributos, SessionStatus status) {

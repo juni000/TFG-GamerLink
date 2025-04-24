@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "imagenes.directorio",
+    "type": "java.lang.String",
+    "description": "Direcotrio donde se guardan las imagenes"
+  },
+  {
+    "name": "jwt.expiration",
+    "type": "java.lang.String",
+    "description": "Tiempo de expiracion del token"
+  },
+  {
+    "name": "jwt.secret",
+    "type": "java.lang.String",
+    "description": "Clave secreta para la firma del token"
+  }
+]}

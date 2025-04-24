@@ -15,4 +15,6 @@ public interface UsuarioIServicio {
 	public Usuario actualizarUsuario(Usuario usuario);
 
 	public void borrarUsuario(Long id);
+
+	public Usuario obtenerUsuarioPorNombre(String username);
 }

@@ -8,18 +8,20 @@ import org.springframework.stereotype.Service;
 import com.app.web.entidad.Usuario;
 import com.app.web.repositorio.UsuarioIRepositorio;
 
+import jakarta.transaction.Transactional;
+
 
 @Service
 public class UsuarioServicio implements UsuarioIServicio {
 	
 	@Autowired
-	private UsuarioIRepositorio repositorio;
-	
+    private UsuarioIRepositorio repositorio;
+
 	@Override
 	public List<Usuario> listarTodosUsuarios() {
 		return repositorio.findAll();
 	}
-	
+	@Transactional
 	@Override
 	public Usuario guardarUsuario(Usuario usuario) {
 		return repositorio.save(usuario);
@@ -27,16 +29,22 @@ public class UsuarioServicio implements UsuarioIServicio {
 
 	@Override
 	public Usuario obtenerUsuarioPorId(Long id) {
-		return repositorio.findById(id).get();
+		return repositorio.findById(id).orElseThrow(() -> 
+        	new RuntimeException("Usuario no encontrado con id: " + id));
 	}
-
+	@Transactional
 	@Override
 	public Usuario actualizarUsuario(Usuario usuario) {
 		return repositorio.save(usuario);
 	}
-
+	@Transactional
 	@Override
 	public void borrarUsuario(Long id) {
 		repositorio.deleteById(id);
+	}
+	@Override
+	public Usuario obtenerUsuarioPorNombre(String username) {
+		return  repositorio.findByNombre(username).orElseThrow(() -> 
+			new RuntimeException("Usuario no encontrado con nombre: " + username));
 	}
 }

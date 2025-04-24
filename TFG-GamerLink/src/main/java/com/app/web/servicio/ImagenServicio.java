@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ImagenServicio implements ImagenIServicio {
-
-	private final static String DIRECTORIO_UPLOAD = "uploads";
+	@Value("${imagenes.directorio}")
+	private String directorioUpload;
 	private final static String IMAGEN_POR_DEFECTO = "avatar_defecto.png";
 
 	@Override
@@ -32,9 +33,13 @@ public class ImagenServicio implements ImagenIServicio {
 	@Override
 	public String copiar(MultipartFile archivo) throws IOException {
 		String nombreArchivo = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename();
-		Path rutaArchivo = getPath(nombreArchivo);
-		Files.copy(archivo.getInputStream(), rutaArchivo);
-		return nombreArchivo;
+	    Path rutaArchivo = getPath(nombreArchivo);
+	    try {
+	        Files.copy(archivo.getInputStream(), rutaArchivo);
+	    } catch (IOException e) {
+	        throw new IOException("Error al guardar el archivo " + nombreArchivo, e);
+	    }
+	    return nombreArchivo;
 	}
 
 	@Override
@@ -50,7 +55,12 @@ public class ImagenServicio implements ImagenIServicio {
 	}
 
 	public Path getPath(String nombreFoto) {
-		return Path.of(DIRECTORIO_UPLOAD).resolve(nombreFoto).toAbsolutePath();
+		Path path = Path.of(directorioUpload).resolve(nombreFoto).toAbsolutePath();
+	    File directorio = path.getParent().toFile();
+	    if (!directorio.exists()) {
+	        directorio.mkdirs();  // Crea el directorio si no existe
+	    }
+	    return path;
 	}
 
 }
