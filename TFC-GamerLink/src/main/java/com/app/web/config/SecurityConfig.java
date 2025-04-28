@@ -5,6 +5,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,14 +26,24 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/register", "/auth/login")
-                        .permitAll()
-                        .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtEntryPoint()))
-                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    	http
+        .cors(Customizer.withDefaults())  // CORS
+        .csrf(AbstractHttpConfigurer::disable)  // CSRF deshabilitado (APIs JWT)
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/auth/**", "/static/**").permitAll()  // Rutas públicas
+            .anyRequest().authenticated()
+        )
+        .formLogin(form -> form
+            .loginPage("/auth/login")  // Página de login Thymeleaf
+            .defaultSuccessUrl("/home", true)
+        )
+        .exceptionHandling(exception -> exception
+            .authenticationEntryPoint(jwtEntryPoint())  // Manejo de errores JWT
+        )
+        .sessionManagement(session -> session
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Sin sesiones
+        )
+        .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

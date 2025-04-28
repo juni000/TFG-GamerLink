@@ -1,8 +1,5 @@
 package com.app.web.controllers;
 
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -20,6 +17,7 @@ import com.app.web.service.AuthService;
 import com.app.web.service.UserService;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,14 +26,14 @@ public class AuthController {
     private final AuthService authService;
     private final UserService userService;
 
-    @Autowired
+    
     public AuthController(AuthService authService, UserService userService) {
         this.authService = authService;
         this.userService = userService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<ApiMessage> login(@Valid @RequestBody LoginUserDto loginUserDto, BindingResult bindingResult, HttpServletResponse response) {
+    @PostMapping("/api/login")
+    public ResponseEntity<ApiMessage> loginApi(@Valid @RequestBody LoginUserDto loginUserDto, BindingResult bindingResult, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(new ApiMessage("Revise sus credenciales"));
         }
@@ -71,7 +69,7 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/api/logout")
     public ResponseEntity<?> logout(HttpServletResponse response){
         authService.logout(response);
         return ResponseEntity.ok(new ApiMessage("Sesión finalizada"));

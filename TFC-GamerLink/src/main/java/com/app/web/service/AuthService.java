@@ -1,7 +1,5 @@
 package com.app.web.service;
 
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -15,7 +13,8 @@ import com.app.web.entities.User;
 import com.app.web.enums.RoleList;
 import com.app.web.jwt.JwtUtil;
 import com.app.web.repositories.RoleRepository;
-import com.app.web.service.CookieService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class AuthService {
@@ -26,8 +25,9 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final CookieService cookieService;
-
-    @Autowired
+    static final String JWT_COOKIE_NAME = "jwt";
+    static final int JWT_COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days in seconds
+    
     public AuthService(UserService userService, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, AuthenticationManagerBuilder authenticationManagerBuilder, CookieService cookieService) {
         this.userService = userService;
         this.roleRepository = roleRepository;
@@ -44,7 +44,7 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authResult);
 
         String jwt = jwtUtil.generateToken(authResult);
-        cookieService.addHttpOnlyCookie("jwt", jwt, 7*24*60*60, response);
+        cookieService.addHttpOnlyCookie(JWT_COOKIE_NAME, jwt, JWT_COOKIE_MAX_AGE, response);
 
         User user = userService.findByUserName(username);
 
