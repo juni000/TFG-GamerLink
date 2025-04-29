@@ -42,22 +42,22 @@ public class AuthService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authResult = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authResult);
-
+        System.out.println("Authentication successful for user: " + username);
         String jwt = jwtUtil.generateToken(authResult);
         cookieService.addHttpOnlyCookie(JWT_COOKIE_NAME, jwt, JWT_COOKIE_MAX_AGE, response);
-
+        
         User user = userService.findByUserName(username);
 
         return user.getRole().getName().toString();
     }
 
     public void registerUser(NewUserDto newUserDto) {
-        if (userService.existsByUserName(newUserDto.getUserName())) {
+        if (userService.existsByUserName(newUserDto.getUsername())) {
             throw new IllegalArgumentException("El nombre de usuario ya existe");
         }
 
         Role roleUser = roleRepository.findByName(RoleList.ROLE_USER).orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-        User user = new User(newUserDto.getUserName(), passwordEncoder.encode(newUserDto.getPassword()), roleUser);
+        User user = new User(newUserDto.getUsername(), passwordEncoder.encode(newUserDto.getPassword()), roleUser);
         userService.save(user);
     }
 

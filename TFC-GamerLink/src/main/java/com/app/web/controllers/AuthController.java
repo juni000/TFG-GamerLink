@@ -45,7 +45,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/register")
+    @PostMapping("/api/register")
     public ResponseEntity<ApiMessage> register(@Valid @RequestBody NewUserDto newUserDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(new ApiMessage("Revise los campos"));
@@ -58,12 +58,12 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/check-auth")
+    @GetMapping("/api/check-auth")
     public ResponseEntity<String> checkAuth() {
         return ResponseEntity.ok().body("Autenticado");
     }
 
-    @GetMapping("/user/details")
+    @GetMapping("/api/user/details")
     public ResponseEntity<User> getAuthenticatedUser() {
         User user = userService.getUserDetails();
         return ResponseEntity.ok(user);

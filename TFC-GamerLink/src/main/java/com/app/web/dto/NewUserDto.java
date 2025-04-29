@@ -1,4 +1,7 @@
 package com.app.web.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewUserDto {
-    public String userName;
-    public String password;
+	@NotBlank(message = "El nombre de usuario es obligatorio")
+	private String username;
+
+	@NotBlank(message = "La contraseña es obligatoria")
+	@Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
+	private String password;
 }
