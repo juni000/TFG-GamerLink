@@ -19,49 +19,40 @@ import jakarta.servlet.http.HttpServletResponse;
 @Service
 public class AuthService {
 
-    private final UserService userService;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final CookieService cookieService;
-    static final String JWT_COOKIE_NAME = "jwt";
-    static final int JWT_COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days in seconds
-    
-    public AuthService(UserService userService, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, AuthenticationManagerBuilder authenticationManagerBuilder, CookieService cookieService) {
-        this.userService = userService;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
-        this.cookieService = cookieService;
-    }
+	private final UserService userService;
+	private final RoleRepository roleRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final JwtUtil jwtUtil;
+	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
+	public AuthService(UserService userService, RoleRepository roleRepository, PasswordEncoder passwordEncoder,
+			JwtUtil jwtUtil, AuthenticationManagerBuilder authenticationManagerBuilder) {
+		this.userService = userService;
+		this.roleRepository = roleRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.jwtUtil = jwtUtil;
+		this.authenticationManagerBuilder = authenticationManagerBuilder;
 
-    public String authenticate(String username, String password, HttpServletResponse response) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        Authentication authResult = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authResult);
-        System.out.println("Authentication successful for user: " + username);
-        String jwt = jwtUtil.generateToken(authResult);
-        cookieService.addHttpOnlyCookie(JWT_COOKIE_NAME, jwt, JWT_COOKIE_MAX_AGE, response);
-        
-        User user = userService.findByUserName(username);
+	}
 
-        return user.getRole().getName().toString();
-    }
+	public String authenticate(String username, String password, HttpServletResponse response) {
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
+				password);
+		Authentication authResult = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+		SecurityContextHolder.getContext().setAuthentication(authResult);
+		System.out.println("Authentication successful for user: " + username);
+		return jwtUtil.generateToken(authResult);
+	}
 
-    public void registerUser(NewUserDto newUserDto) {
-        if (userService.existsByUserName(newUserDto.getUsername())) {
-            throw new IllegalArgumentException("El nombre de usuario ya existe");
-        }
+	public void registerUser(NewUserDto newUserDto) {
+		if (userService.existsByUserName(newUserDto.getUsername())) {
+			throw new IllegalArgumentException("El nombre de usuario ya existe");
+		}
 
-        Role roleUser = roleRepository.findByName(RoleList.ROLE_USER).orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-        User user = new User(newUserDto.getUsername(), passwordEncoder.encode(newUserDto.getPassword()), roleUser);
-        userService.save(user);
-    }
+		Role roleUser = roleRepository.findByName(RoleList.ROLE_USER)
+				.orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+		User user = new User(newUserDto.getUsername(), passwordEncoder.encode(newUserDto.getPassword()), roleUser);
+		userService.save(user);
+	}
 
-    public void logout(HttpServletResponse response){
-        cookieService.deleteCookie("jwt",response);
-    }
 }

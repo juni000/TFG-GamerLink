@@ -60,10 +60,4 @@ public class UserController {
 		}
 	}
 
-	// Cerrar sesión
-	@GetMapping("/logout")
-	public String logout(HttpServletResponse response) {
-		authService.logout(response);
-		return "redirect:/auth/login";
-	}
 }

@@ -69,9 +69,4 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/api/logout")
-    public ResponseEntity<?> logout(HttpServletResponse response){
-        authService.logout(response);
-        return ResponseEntity.ok(new ApiMessage("Sesión finalizada"));
-    }
 }
