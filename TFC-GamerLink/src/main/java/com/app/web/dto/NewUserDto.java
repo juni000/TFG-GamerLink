@@ -16,4 +16,7 @@ public class NewUserDto {
 	@NotBlank(message = "La contraseña es obligatoria")
 	@Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
 	private String password;
+	@NotBlank(message = "La confirmación de contraseña es obligatoria")
+	@Size(min = 8, message = "La confirmación de contraseña debe tener al menos 8 caracteres")
+	private String confirmPassword;
 }

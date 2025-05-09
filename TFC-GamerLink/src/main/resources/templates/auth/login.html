@@ -16,6 +16,14 @@
             --accent-black: #1e1e1e;
             --text-light: #f8f9fa;
         }
+        .card, .card-body, .text-muted, .form-label, .form-check-label, .placeholder {
+		    color: var(--text-light) !important;
+		}
+		::placeholder {
+		    color: #a0a0a0 !important; /* Gris claro */
+		    opacity: 1; /* Asegura que no sea transparente en algunos navegadores */
+		}
+		
         
         body {
             background-color: var(--primary-dark);
@@ -109,12 +117,6 @@
                                     <input type="password" class="form-control form-control-lg" id="password"
                                         name="password" placeholder="Tu contraseña" required>
                                 </div>
-                            </div>
-
-                            <!-- Recordar sesión -->
-                            <div class="mb-4 form-check">
-                                <input type="checkbox" class="form-check-input" id="remember">
-                                <label class="form-check-label" for="remember">Recordar sesión</label>
                             </div>
 
                             <!-- Botón de Login -->

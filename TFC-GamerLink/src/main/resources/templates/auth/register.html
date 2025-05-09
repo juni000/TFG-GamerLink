@@ -16,6 +16,14 @@
             --accent-black: #1e1e1e;
             --text-light: #f8f9fa;
         }
+        .card, .card-body, .text-muted, .form-label, .form-check-label{
+		    color: var(--text-light) !important;
+		}
+		::placeholder {
+		    color: #a0a0a0 !important; /* Gris claro */
+		    opacity: 1; /* Asegura que no sea transparente en algunos navegadores */
+		}
+
         
         body {
             background-color: var(--primary-dark);
@@ -108,7 +116,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     <input type="text" class="form-control form-control-lg" id="username"
-                                        th:field="*{username}" placeholder="Ej: GamerPro123" required>
+                                        th:field="*{username}" placeholder="Ej: Pepe123" required>
                                 </div>
                                 <small class="error-message"
                                     th:if="${#fields.hasErrors('username')}"
@@ -127,11 +135,17 @@
                                     th:if="${#fields.hasErrors('password')}"
                                     th:errors="*{password}">Error</small>
                             </div>
-
-                            <!-- Términos y condiciones -->
-                            <div class="mb-4 form-check">
-                                <input type="checkbox" class="form-check-input" id="terms" required>
-                                <label class="form-check-label" for="terms">Acepto los <a href="#" class="text-gamer-green">Términos y Condiciones</a></label>
+                            <!-- Confirmar Contraseña -->
+                            <div class="mb-4">
+                                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control form-control-lg" id="confirmPassword"
+                                        th:field="*{confirmPassword}" placeholder="Repite tu contraseña" required>
+                                </div>
+                                <small class="error-message"
+                                    th:if="${#fields.hasErrors('confirmPassword')}"
+                                    th:errors="*{confirmPassword}">Error</small>
                             </div>
 
                             <!-- Botón de Registro -->
