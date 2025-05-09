@@ -2,6 +2,8 @@ package com.app.web.jwt;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.crypto.SecretKey;
 
@@ -17,13 +19,16 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtil {
+	
 
     @Value("${jwt.secret}")
     private String secret;
 
     @Value("${jwt.expiration}")
     private int expiration;
-
+    
+    private final Set<String> invalidatedTokens = ConcurrentHashMap.newKeySet();
+    
     public String generateToken(Authentication authentication){
         UserDetails mainUser = (UserDetails) authentication.getPrincipal();
         SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
@@ -58,4 +63,12 @@ public class JwtUtil {
     public String extractUserName(String token){
         return extractAllClaims(token).getSubject();
     }
+    public void invalidateToken(String token) {
+        invalidatedTokens.add(token);
+    }
+
+    public boolean isTokenValid(String token) {
+        return !invalidatedTokens.contains(token) && !isTokenExpired(token);
+    }
+
 }

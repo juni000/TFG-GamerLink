@@ -1,0 +1,111 @@
+/* styles.css */
+:root {
+    --primary-dark: #121212;
+    --primary-green: #28a745;
+    --secondary-green: #218838;
+    --accent-black: #1e1e1e;
+    --text-light: #f8f9fa;
+    --text-muted: #adb5bd;
+}
+
+body {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+}
+
+.profile-header {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    border-radius: 15px;
+}
+
+.stat-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--primary-green);
+    background-color: var(--accent-black);
+    color: var(--text-light);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(40, 167, 69, 0.1);
+}
+
+.navbar {
+    background-color: #000 !important;
+}
+
+.card {
+    background-color: var(--accent-black);
+    color: var(--text-light);
+    border: none;
+}
+
+.card-header {
+    background-color: #1a1a1a !important;
+    border-bottom: 1px solid #333 !important;
+    color: var(--text-light);
+}
+
+.list-group-item {
+    background-color: transparent;
+    color: var(--text-light);
+    border-color: #333;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.btn-outline-primary {
+    color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-green);
+    color: white;
+}
+
+.bg-primary { background-color: var(--primary-green) !important; }
+.bg-success { background-color: #2e7d32 !important; }
+.bg-warning { background-color: #ff8f00 !important; }
+.bg-info { background-color: #00838f !important; }
+
+.chat-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 0.7rem;
+}
+
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-circle-sm {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge.bg-light {
+    background-color: #333 !important;
+    color: var(--primary-green) !important;
+}
+
+footer {
+    background-color: #000 !important;
+}

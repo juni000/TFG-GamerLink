@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -31,6 +32,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/register", "/auth/login", "/landing")
                         .permitAll()
                         .anyRequest().authenticated())
+                .logout(logout -> logout
+                        .logoutUrl("/auth/logout")  // Personaliza la URL de logout
+                        .logoutSuccessUrl("/auth/login?logoutSuccess=true")
+                        .addLogoutHandler(new SecurityContextLogoutHandler())
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        )
                 .formLogin(form -> form
                         .loginPage("/auth/login")  // Página de login Thymeleaf
                         .defaultSuccessUrl("/home", true)
