@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamerLink - Conecta con Gamers</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #121212;
+            --primary-green: #28a745;
+            --secondary-green: #218838;
+            --accent-black: #1e1e1e;
+            --text-light: #f8f9fa;
+        }
+        
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0.8)), 
+                        url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            min-height: 80vh;
+        }
+        
+        .btn-gamer {
+            background-color: var(--primary-green);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 12px 30px;
+            transition: all 0.3s;
+        }
+        
+        .btn-gamer:hover {
+            background-color: var(--secondary-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        
+        .feature-card {
+            background-color: var(--accent-black);
+            border-radius: 10px;
+            transition: all 0.3s;
+            border-left: 4px solid var(--primary-green);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.1);
+        }
+        
+        .nav-link {
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-green);
+        }
+        
+        .text-gamer-green {
+            color: var(--primary-green);
+        }
+        
+        .divider {
+            border-top: 2px solid var(--primary-green);
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="#">
+                <i class="fas fa-gamepad text-gamer-green me-2"></i>GamerLink
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#features">Características</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#community">Comunidad</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#about">Nosotros</a>
+                    </li>
+                </ul>
+                <div class="ms-lg-3 mt-3 mt-lg-0">
+                    <a href="/auth/login" class="btn btn-gamer me-2">Iniciar Sesión</a>
+                    <a href="/auth/register" class="btn btn-outline-light">Registrarse</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section d-flex align-items-center">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-3 fw-bold mb-4">
+                        Conecta. Juega. <span class="text-gamer-green">Domina.</span>
+                    </h1>
+                    <p class="lead mb-4">
+                        Únete a la comunidad gamer más vibrante. Encuentra compañeros de juego, 
+                        organiza partidas y lleva tu experiencia gaming al siguiente nivel.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="/auth/register" class="btn btn-gamer">
+                            <i class="fas fa-user-plus me-2"></i>Regístrate Gratis
+                        </a>
+                        <a href="#features" class="btn btn-outline-light">
+                            <i class="fas fa-play-circle me-2"></i>Descubre Más
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2956/2956788.png" class="img-fluid" alt="Gaming Illustration">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5 bg-black">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold display-5 mb-3">
+                    <span class="text-gamer-green">Características</span> Destacadas
+                </h2>
+                <p class="lead">Todo lo que necesitas para una experiencia gaming completa</p>
+                <div class="divider w-25 mx-auto my-4"></div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card h-100 p-4">
+                        <div class="icon-circle bg-dark-green text-gamer-green mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                        <h4 class="fw-bold">Comunidad Activa</h4>
+                        <p>Conecta con miles de gamers como tú. Encuentra compañeros para tus juegos favoritos.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card h-100 p-4">
+                        <div class="icon-circle bg-dark-green text-gamer-green mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-trophy fa-2x"></i>
+                        </div>
+                        <h4 class="fw-bold">Torneos</h4>
+                        <p>Participa en torneos organizados y demuestra tus habilidades para ganar premios.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card h-100 p-4">
+                        <div class="icon-circle bg-dark-green text-gamer-green mb-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-comments fa-2x"></i>
+                        </div>
+                        <h4 class="fw-bold">Chat Integrado</h4>
+                        <p>Sistema de chat en tiempo real para coordinar partidas y hacer nuevos amigos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Stats -->
+    <section id="community" class="py-5" style="background-color: #0a0a0a;">
+        <div class="container py-5">
+            <div class="row text-center g-4">
+                <div class="col-md-3">
+                    <h3 class="display-4 fw-bold text-gamer-green">10K+</h3>
+                    <p class="text-uppercase small">Jugadores Activos</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 class="display-4 fw-bold text-gamer-green">50+</h3>
+                    <p class="text-uppercase small">Juegos Soportados</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 class="display-4 fw-bold text-gamer-green">5K+</h3>
+                    <p class="text-uppercase small">Partidas Diarias</p>
+                </div>
+                <div class="col-md-3">
+                    <h3 class="display-4 fw-bold text-gamer-green">100+</h3>
+                    <p class="text-uppercase small">Torneos Mensuales</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 bg-black">
+        <div class="container py-5 text-center">
+            <h2 class="display-5 fw-bold mb-4">¿Listo para unirte a la aventura?</h2>
+            <p class="lead mb-5">Regístrate ahora y comienza a conectar con gamers de todo el mundo</p>
+            <a href="/auth/register" class="btn btn-gamer btn-lg px-5 py-3">
+                <i class="fas fa-gamepad me-2"></i> EMPIEZA GRATIS
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4" style="background-color: #000;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="fw-bold">
+                        <i class="fas fa-gamepad text-gamer-green me-2"></i>GamerLink
+                    </h5>
+                    <p class="small mb-0">La plataforma definitiva para conectar gamers</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-icons">
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitch"></i></a>
+                    </div>
+                    <p class="small mt-3 mb-0">© 2023 GamerLink. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

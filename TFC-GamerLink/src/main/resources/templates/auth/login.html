@@ -3,79 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GamerLink - Login</title>
-    <!-- Bootstrap CSS (CDN) -->
+    <title>GamerLink - Iniciar Sesión</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Estilos personalizados (opcional) -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background-color: #f8f9fa;
+        :root {
+            --primary-dark: #121212;
+            --primary-green: #28a745;
+            --secondary-green: #218838;
+            --accent-black: #1e1e1e;
+            --text-light: #f8f9fa;
         }
+        
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
         .login-card {
+            background-color: var(--accent-black);
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.1);
+            border-top: 4px solid var(--primary-green);
+        }
+        
+        .btn-gamer {
+            background-color: var(--primary-green);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 12px 30px;
+            transition: all 0.3s;
+        }
+        
+        .btn-gamer:hover {
+            background-color: var(--secondary-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        
+        .form-control {
+            background-color: #2a2a2a;
+            border: 1px solid #333;
+            color: var(--text-light);
+        }
+        
+        .form-control:focus {
+            background-color: #2a2a2a;
+            color: var(--text-light);
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+        }
+        
+        .text-gamer-green {
+            color: var(--primary-green);
+        }
+        
+        .divider {
+            border-top: 2px solid var(--primary-green);
+            opacity: 0.3;
+            margin: 1.5rem 0;
+        }
+        
+        .input-group-text {
+            background-color: #333;
+            border: 1px solid #333;
+            color: var(--primary-green);
         }
     </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
+<body>
+    <div class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <!-- Tarjeta de login -->
+            <div class="col-md-8 col-lg-6">
+                <!-- Tarjeta de Login -->
                 <div class="card login-card">
-                    <div class="card-body p-4">
-                        <!-- Logo o título -->
+                    <div class="card-body p-4 p-sm-5">
+                        <!-- Logo y Título -->
                         <div class="text-center mb-4">
-                            <h2 class="fw-bold">GamerLink</h2>
-                            <p class="text-muted">Inicia sesión para continuar</p>
+                            <i class="fas fa-gamepad fa-3x text-gamer-green mb-3"></i>
+                            <h2 class="card-title fw-bold">Iniciar Sesión en <span class="text-gamer-green">GamerLink</span></h2>
+                            <p class="text-muted">Ingresa tus credenciales para continuar</p>
                         </div>
 
-                        <!-- Formulario de login -->
+                        <!-- Formulario de Login -->
                         <form th:action="@{/auth/login}" method="post">
-                            <!-- Usuario -->
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Usuario</label>
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="username" 
-                                    name="username" 
-                                    required
-                                    placeholder="Tu usuario">
+                            <!-- Nombre de Usuario -->
+                            <div class="mb-4">
+                                <label for="username" class="form-label">Nombre de usuario</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control form-control-lg" id="username"
+                                        name="username" placeholder="Tu nombre de usuario" required>
+                                </div>
                             </div>
 
                             <!-- Contraseña -->
-                            <div class="mb-3">
+                            <div class="mb-4">
                                 <label for="password" class="form-label">Contraseña</label>
-                                <input 
-                                    type="password" 
-                                    class="form-control" 
-                                    id="password" 
-                                    name="password" 
-                                    required
-                                    placeholder="Tu contraseña">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control form-control-lg" id="password"
+                                        name="password" placeholder="Tu contraseña" required>
+                                </div>
                             </div>
 
-                            <!-- Botón de submit -->
-                            <button type="submit" class="btn btn-primary w-100 mt-3">
-                                Iniciar sesión
+                            <!-- Recordar sesión -->
+                            <div class="mb-4 form-check">
+                                <input type="checkbox" class="form-check-input" id="remember">
+                                <label class="form-check-label" for="remember">Recordar sesión</label>
+                            </div>
+
+                            <!-- Botón de Login -->
+                            <button type="submit" class="btn btn-gamer w-100 py-2 mb-3 fw-bold">
+                                <i class="fas fa-sign-in-alt me-2"></i> INICIAR SESIÓN
                             </button>
+
+                            <!-- Mensaje de error -->
+                            <div th:if="${error}" class="alert alert-danger mt-3 text-center">
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                                <span th:text="${error}">Credenciales incorrectas</span>
+                            </div>
+
+                            <div class="divider"></div>
+
+                            <!-- Enlaces adicionales -->
+                            <div class="text-center">
+                                <p class="mb-2">
+                                    <a href="#" class="text-gamer-green">¿Olvidaste tu contraseña?</a>
+                                </p>
+                                <p class="mb-0">
+                                    ¿No tienes cuenta? <a th:href="@{/auth/register}" class="text-gamer-green fw-bold">Regístrate aquí</a>
+                                </p>
+                            </div>
                         </form>
-
-                        <!-- Mensaje de error -->
-                        <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
-
-                        <!-- Enlace a registro (opcional) -->
-                        <div class="text-center mt-3">
-                            <p class="text-muted">¿No tienes cuenta? <a th:href="@{/auth/register}">Regístrate</a></p>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS (opcional, solo si usas componentes interactivos) -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
