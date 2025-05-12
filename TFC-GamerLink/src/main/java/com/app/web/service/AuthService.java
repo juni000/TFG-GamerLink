@@ -1,9 +1,5 @@
 package com.app.web.service;
 
-import java.time.LocalDateTime;
-
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -17,7 +13,6 @@ import com.app.web.entities.User;
 import com.app.web.enums.RoleList;
 import com.app.web.jwt.JwtUtil;
 import com.app.web.repositories.RoleRepository;
-import com.app.web.repositories.UserRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
 

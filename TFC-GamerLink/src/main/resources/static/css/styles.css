@@ -109,3 +109,84 @@ body {
 footer {
     background-color: #000 !important;
 }
+
+.card,
+.card-body,
+.text-muted,
+.form-label,
+.form-check-label,
+.placeholder {
+	color: var(--text-light) !important;
+}
+
+::placeholder {
+	color: #a0a0a0 !important;
+	/* Gris claro */
+	opacity: 1;
+	/* Asegura que no sea transparente en algunos navegadores */
+}
+
+body {
+	background-color: var(--primary-dark);
+	color: var(--text-light);
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+	background-color: var(--accent-black);
+	border-radius: 10px;
+	border-top: 4px solid var(--primary-green);
+	margin-bottom: 20px;
+}
+
+.btn-gamer {
+	background-color: var(--primary-green);
+	border: none;
+	color: white;
+	font-weight: bold;
+	transition: all 0.3s;
+}
+
+.btn-gamer:hover {
+	background-color: var(--secondary-green);
+	transform: translateY(-2px);
+}
+
+.btn-outline-gamer {
+	border-color: var(--primary-green);
+	color: var(--primary-green);
+}
+
+.btn-outline-gamer:hover {
+	background-color: var(--primary-green);
+	color: white;
+}
+
+.friend-avatar {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid var(--primary-green);
+}
+
+.status-online {
+	color: var(--primary-green);
+	font-size: 0.8rem;
+}
+
+.status-offline {
+	color: #6c757d;
+	font-size: 0.8rem;
+}
+
+.search-input {
+	background-color: #2a2a2a;
+	border: 1px solid #333;
+	color: var(--text-light);
+}
+
+.search-input:focus {
+	border-color: var(--primary-green);
+	box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}

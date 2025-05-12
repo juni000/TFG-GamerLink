@@ -9,58 +9,13 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     rel="stylesheet">
 <!-- Font Awesome -->
+<link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#"> 
-                <i class="fas fa-gamepad me-2 text-gamer-green"></i>GamerLink
-            </a>
-            
-            <!-- Botones de Chat -->
-            <div class="d-flex me-auto ms-3">
-                <div class="position-relative me-3">
-                    <a href="#" class="btn btn-outline-light position-relative" title="Chat Global">
-                        <i class="fas fa-globe me-1"></i> Global
-                        <span class="chat-badge badge bg-danger rounded-pill">3</span>
-                    </a>
-                </div>
-                <div class="position-relative">
-                    <a href="#" class="btn btn-outline-light position-relative" title="Chat con Amigos">
-                        <i class="fas fa-user-friends me-1"></i> Amigos
-                        <span class="chat-badge badge bg-danger rounded-pill">5</span>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Perfil de Usuario -->
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <button
-                        class="btn btn-outline-light dropdown-toggle d-flex align-items-center"
-                        type="button" id="userDropdown" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle me-2"></i> <span
-                            th:text="${user.userName}">Usuario</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                    	<li><a class="dropdown-item" th:href="@{/admin/users}" th:if="${#authentication.principal.authorities.?[authority == 'ROLE_ADMIN'].size() > 0}">
-                            <i class="fas fa-users-cog me-2"></i>Admin Panel</a>
-                        </li>
-                        <li><a class="dropdown-item" href="#"><i
-                                class="fas fa-user me-2"></i>Perfil</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger"
-                            th:href="@{/auth/logout}"><i class="fas fa-sign-out-alt me-2"></i>Cerrar
-                                sesión</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+		<div th:replace="fragments/navbar :: navbar(user=${user})"></div>
 
 	<!-- Main Content -->
 	<div class="container py-5">
@@ -198,7 +153,7 @@
 					<div class="card-body">
 						<a href="#" class="btn btn-primary w-100 mb-3"> <i
 							class="fas fa-plus me-2"></i>Nueva Partida
-						</a> <a href="#" class="btn btn-outline-primary w-100 mb-3"> <i
+						</a> <a href="/friends" class="btn btn-outline-primary w-100 mb-3"> <i
 							class="fas fa-user-friends me-2"></i>Buscar Amigos
 						</a> <a href="#" class="btn btn-outline-secondary w-100"> <i
 							class="fas fa-cog me-2"></i>Configuración
@@ -210,22 +165,7 @@
 	</div>
 
 	<!-- Footer -->
-	<footer class="bg-dark text-white py-4 mt-5">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6">
-					<h5>
-						<i class="fas fa-gamepad me-2"></i>GamerLink
-					</h5>
-					<p class="mb-0">La plataforma definitiva para gamers</p>
-				</div>
-				<div class="col-md-6 text-md-end">
-					<p class="mb-0">© 2023 GamerLink. Todos los derechos
-						reservados.</p>
-				</div>
-			</div>
-		</div>
-	</footer>
+	<div th:replace="fragments/footer :: footer"></div>
 
 	<!-- Bootstrap JS -->
 	<script
