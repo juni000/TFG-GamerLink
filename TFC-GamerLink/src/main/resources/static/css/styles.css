@@ -190,3 +190,37 @@ body {
 	border-color: var(--primary-green);
 	box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
 }
+
+.admin-card {
+    background-color: var(--accent-black);
+    border-radius: 10px;
+    border-top: 4px solid var(--primary-green);
+}
+
+.table-dark {
+    background-color: #1a1a1a;
+}
+
+.table-dark th {
+    border-color: #333;
+}
+
+.table-dark td {
+    border-color: #333;
+}
+.edit-card {
+    background-color: var(--accent-black);
+    border-radius: 10px;
+    border-top: 4px solid var(--primary-green);
+}
+
+.form-control {
+    background-color: #2a2a2a;
+    border: 1px solid #333;
+    color: var(--text-light);
+}
+
+.form-control:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}

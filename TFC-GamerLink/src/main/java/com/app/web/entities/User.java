@@ -38,6 +38,9 @@ public class User {
     @Column(nullable = false)
     private String password;
     
+    @Column(name = "avatar", nullable = true, length = 100)
+    private String avatar;
+    
     //fetch = FetchType.EAGER es usado para que la relación se cargue inmediatamente
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
