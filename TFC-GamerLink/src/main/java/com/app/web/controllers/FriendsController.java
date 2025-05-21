@@ -115,8 +115,14 @@ public class FriendsController {
             	redirectAttributes.addFlashAttribute("error", "No tienes permiso para rechazar esta solicitud");
                 return "redirect:/friends";
             }
-
+            
             friendshipService.rejectFriendRequest(friendship);
+            // Crear notificación de declinación
+            notificationService.createNotification(
+				friendship.getUser(), 
+				currentUser.getUserName() + " ha rechazado tu solicitud de amistad",
+				NotificationType.FRIEND_REQUEST_DECLINED
+			);
             redirectAttributes.addFlashAttribute("success", "Solicitud de amistad rechazada");
             return "redirect:/friends";
         } catch (Exception e) {

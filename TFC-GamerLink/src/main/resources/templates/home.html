@@ -4,171 +4,276 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GamerLink - Inicio</title>
-<!-- Bootstrap CSS -->
 <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     rel="stylesheet">
-<!-- Font Awesome -->
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+   /* Estilos para notificaciones */
+    .notification-card {
+        transition: all 0.3s ease;
+        background-color: var(--accent-black);
+        border-left: 4px solid transparent;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
+    
+    .notification-card.unread {
+        border-left-color: var(--primary-green);
+        background-color: #252525;
+    }
+    
+    .notification-card:hover {
+        background-color: #2a2a2a;
+        transform: translateX(5px);
+    }
+    
+    .notification-time {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+    
+    .notification-type {
+        font-weight: 600;
+        color: var(--text-light);
+    }
+    
+    .notification-badge {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+    
+    .notification-badge.request {
+        background-color: rgba(0, 131, 143, 0.2);
+        color: #00838f;
+    }
+    
+    .notification-badge.accepted {
+        background-color: rgba(46, 125, 50, 0.2);
+        color: #2e7d32;
+    }
+    
+    .notification-badge.declined {
+        background-color: rgba(198, 40, 40, 0.2);
+        color: #c62828;
+    }
+    
+    .notification-badge.message {
+        background-color: rgba(40, 167, 69, 0.2);
+        color: var(--primary-green);
+    }
+    
+    .notification-badge.default {
+        background-color: rgba(173, 181, 189, 0.2);
+        color: var(--text-muted);
+    }
+    
+    .notification-mark-btn {
+        background-color: transparent;
+        border: 1px solid var(--primary-green);
+        color: var(--primary-green);
+        padding: 3px 10px;
+        font-size: 0.8rem;
+        transition: all 0.3s;
+    }
+    
+    .notification-mark-btn:hover {
+        background-color: var(--primary-green);
+        color: white;
+    }
+    
+    .notification-empty {
+        text-align: center;
+        padding: 40px 0;
+    }
+    
+    .notification-empty i {
+        font-size: 3rem;
+        color: var(--text-muted);
+        margin-bottom: 15px;
+    }
+    
+    .notification-empty h4 {
+        color: var(--text-light);
+    }
+    
+    .notification-empty p {
+        color: var(--text-muted);
+    }
+</style>
 </head>
 <body>
     <!-- Navbar -->
-	<div th:replace="fragments/navbar :: navbar(user=${user})"></div>
+    <div th:replace="fragments/navbar :: navbar(user=${user})"></div>
 
-	<!-- Main Content -->
-	<div class="container py-5">
-		<!-- Welcome Card -->
-		<div class="card profile-header text-white mb-4 border-0 shadow">
-			<div class="card-body">
-				<div class="row align-items-center">
-					<div class="col-md-8">
-						<h1 class="display-5 fw-bold">
-							<span th:text="'¡Hola, ' + ${user.userName} + '!'">¡Hola,
-								Usuario!</span>
-						</h1>
-						<p class="lead mb-0">
-							Tu rol: <span class="badge bg-light text-dark"
-								th:text="${user.role.name}">ROL</span>
-						</p>
-					</div>
-					<div class="col-md-4 text-center">
-						<img
-							src="https://ui-avatars.com/api/?name=John+Doe&background=random"
-							th:src="@{'https://ui-avatars.com/api/?name=' + ${user.userName} + '&background=random'}"
-							class="rounded-circle img-thumbnail" width="120" alt="Avatar">
-					</div>
-				</div>
-			</div>
+    <!-- Main Content -->
+    <div class="container py-5">
+        <!-- Welcome Card -->
+        <div class="card profile-header text-white mb-4 border-0 shadow">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="display-5 fw-bold">
+                            <span th:text="'¡Hola, ' + ${user.userName} + '!'">¡Hola,
+                                Usuario!</span>
+                        </h1>
+                        <p class="lead mb-0">
+                            Tu rol: <span class="badge bg-light text-dark"
+                                th:text="${user.role.name.getName()}">ROL</span>
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <img th:src="${user.avatar != null} ? '/imagen/uploads/' + ${user.avatar} : 'https://ui-avatars.com/api/?name=' + ${user.userName}"
+                             class="rounded-circle img-thumbnail" width="150" id="avatarPreview">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card stat-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="text-uppercase text-muted mb-0">Partidas</h6>
+                                <h3 class="mb-0">24</h3>
+                            </div>
+                            <div class="icon-circle bg-primary text-white">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="text-uppercase text-muted mb-0">Amigos</h6>
+                                <h3 class="mb-0" th:text="${friends.size()}">0</h3>
+                            </div>
+                            <div class="icon-circle bg-success text-white">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="text-uppercase text-muted mb-0">Notificaciones</h6>
+                                <h3 class="mb-0" th:text="${unreadCount}">8</h3>
+                            </div>
+                            <div class="icon-circle bg-warning text-white">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Row -->
+        <div class="row g-4">
+            <!-- Notificaciones -->
+		<div class="col-lg-8">
+		    <div class="card shadow-sm h-100">
+		        <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+		            <h5 class="mb-0">
+		                <i class="fas fa-bell me-2 text-gamer-green"></i>Tus Notificaciones
+		                <span th:if="${unreadCount > 0}" class="badge bg-danger ms-2" th:text="${unreadCount}"></span>
+		            </h5>
+		            <form th:action="@{/notifications/markAllAsRead}" method="post">
+		                <button type="submit" class="btn btn-sm btn-gamer">
+		                    <i class="fas fa-check-circle me-1"></i> Marcar todas como leídas
+		                </button>
+		            </form>
+		        </div>
+		        <div class="card-body">
+		            <div th:if="${notifications.empty}" class="notification-empty">
+		                <i class="fas fa-bell-slash"></i>
+		                <h4>No tienes notificaciones</h4>
+		                <p>Cuando tengas notificaciones, aparecerán aquí</p>
+		            </div>
+		            
+		            <div class="list-group list-group-flush">
+		                <div th:each="notification : ${notifications}" 
+		                     class="list-group-item notification-card p-3"
+		                     th:classappend="${!notification.read} ? 'unread' : ''">
+		                    <div class="d-flex align-items-start">
+		                        <div class="icon-circle-sm me-3">
+						            <th:block th:switch="${notification.type.toString()}">
+						                <!-- Icono y color según tipo -->
+						                <i th:case="FRIEND_REQUEST" class="fas fa-user-plus bg-info"></i>
+						                <i th:case="FRIEND_REQUEST_ACCEPTED" class="fas fa-user-check bg-success"></i>
+						                <i th:case="FRIEND_REQUEST_DECLINED" class="fas fa-user-times bg-danger"></i>
+						                <i th:case="MESSAGE" class="fas fa-envelope bg-primary"></i>
+						                <i th:case="*" class="fas fa-bell bg-secondary"></i>
+						            </th:block>
+						        </div>
+		                        <div class="flex-grow-1">
+		                            <div class="d-flex justify-content-between">
+		                                <h6 class="mb-1 notification-type" th:text="${notification.message}"></h6>
+		                                <small class="notification-time" 
+		                                       th:text="${#temporals.format(notification.createdAt, 'dd/MM HH:mm')}"></small>
+		                            </div>
+		                            <div class="d-flex justify-content-between align-items-center mt-2">
+		                                <small class="text-muted" th:text="${notification.type.getName()}"></small>
+		                                <form th:if="${!notification.read}" th:action="@{'/notifications/markAsRead/' + ${notification.id}}" method="post">
+		                                    <button type="submit" class="btn btn-sm notification-mark-btn">
+		                                        <i class="fas fa-check me-1"></i> Marcar como leída
+		                                    </button>
+		                                </form>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
 		</div>
 
-		<!-- Stats Row -->
-		<div class="row g-4 mb-4">
-			<div class="col-md-4">
-				<div class="card stat-card h-100">
-					<div class="card-body">
-						<div class="d-flex justify-content-between">
-							<div>
-								<h6 class="text-uppercase text-muted mb-0">Partidas</h6>
-								<h3 class="mb-0">24</h3>
-							</div>
-							<div class="icon-circle bg-primary text-white">
-								<i class="fas fa-gamepad"></i>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="card stat-card h-100">
-					<div class="card-body">
-						<div class="d-flex justify-content-between">
-							<div>
-								<h6 class="text-uppercase text-muted mb-0">Amigos</h6>
-								<h3 class="mb-0">15</h3>
-							</div>
-							<div class="icon-circle bg-success text-white">
-								<i class="fas fa-users"></i>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="card stat-card h-100">
-					<div class="card-body">
-						<div class="d-flex justify-content-between">
-							<div>
-								<h6 class="text-uppercase text-muted mb-0">Logros</h6>
-								<h3 class="mb-0">8</h3>
-							</div>
-							<div class="icon-circle bg-warning text-white">
-								<i class="fas fa-trophy"></i>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+            <!-- Quick Links -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0">
+                            <i class="fas fa-rocket me-2"></i>Acciones Rápidas
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="#" class="btn btn-primary w-100 mb-3"> <i
+                            class="fas fa-plus me-2"></i>Nueva Partida
+                        </a> <a href="/friends" class="btn btn-outline-primary w-100 mb-3"> <i
+                            class="fas fa-user-friends me-2"></i>Buscar Amigos
+                        </a> <a href="/notifications" class="btn btn-outline-secondary w-100"> <i
+                            class="fas fa-bell me-2"></i>Ver Notificaciones
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-		<!-- Content Row -->
-		<div class="row g-4">
-			<!-- Recent Activity -->
-			<div class="col-lg-8">
-				<div class="card shadow-sm h-100">
-					<div class="card-header bg-white border-bottom">
-						<h5 class="mb-0">
-							<i class="fas fa-history me-2"></i>Actividad Reciente
-						</h5>
-					</div>
-					<div class="card-body">
-						<div class="list-group list-group-flush">
-							<div class="list-group-item border-0 px-0 py-3">
-								<div class="d-flex">
-									<div class="icon-circle-sm bg-info text-white me-3">
-										<i class="fas fa-gamepad"></i>
-									</div>
-									<div>
-										<h6 class="mb-1">Nueva partida iniciada</h6>
-										<p class="small text-muted mb-0">Hace 2 horas</p>
-									</div>
-								</div>
-							</div>
-							<div class="list-group-item border-0 px-0 py-3">
-								<div class="d-flex">
-									<div class="icon-circle-sm bg-success text-white me-3">
-										<i class="fas fa-user-plus"></i>
-									</div>
-									<div>
-										<h6 class="mb-1">Nuevo amigo agregado</h6>
-										<p class="small text-muted mb-0">Ayer a las 14:30</p>
-									</div>
-								</div>
-							</div>
-							<div class="list-group-item border-0 px-0 py-3">
-								<div class="d-flex">
-									<div class="icon-circle-sm bg-warning text-white me-3">
-										<i class="fas fa-trophy"></i>
-									</div>
-									<div>
-										<h6 class="mb-1">Logro desbloqueado</h6>
-										<p class="small text-muted mb-0">3 días atrás</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
 
-			<!-- Quick Links -->
-			<div class="col-lg-4">
-				<div class="card shadow-sm h-100">
-					<div class="card-header bg-white border-bottom">
-						<h5 class="mb-0">
-							<i class="fas fa-rocket me-2"></i>Acciones Rápidas
-						</h5>
-					</div>
-					<div class="card-body">
-						<a href="#" class="btn btn-primary w-100 mb-3"> <i
-							class="fas fa-plus me-2"></i>Nueva Partida
-						</a> <a href="/friends" class="btn btn-outline-primary w-100 mb-3"> <i
-							class="fas fa-user-friends me-2"></i>Buscar Amigos
-						</a> <a href="#" class="btn btn-outline-secondary w-100"> <i
-							class="fas fa-cog me-2"></i>Configuración
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Footer -->
-	<div th:replace="fragments/footer :: footer"></div>
-
-	<!-- Bootstrap JS -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -30,30 +30,32 @@ public class ProfileService {
         // Actualizar username si es diferente
         if (dto.getUsername() != null && !dto.getUsername().equals(currentUsername)) {
             if (userRepository.existsByUserName(dto.getUsername())) {
-                throw new IllegalArgumentException("El nombre de usuario ya está en uso");
+                throw new IllegalArgumentException("El nombre de usuario '" + dto.getUsername() + "' ya está en uso");
             }
             user.setUserName(dto.getUsername());
         }
         
         // Actualizar contraseña si se proporciona
         if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            if (dto.getCurrentPassword() == null || dto.getCurrentPassword().isEmpty()) {
+                throw new SecurityException("Debe ingresar la contraseña actual para cambiarla");
+            }
             if (!passwordEncoder.matches(dto.getCurrentPassword(), user.getPassword())) {
-                throw new SecurityException("Contraseña actual incorrecta");
+                throw new SecurityException("La contraseña actual no es correcta");
             }
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
         
-        // Actualizar avatar si se sube uno nuevo
+        // Actualizar avatar
         if (dto.getAvatar() != null && !dto.getAvatar().isEmpty()) {
-            // Eliminar avatar anterior si existe
-            if (user.getAvatar() != null) {
-                uploadFileService.delete(user.getAvatar());
-            }
             try {
+                if (user.getAvatar() != null) {
+                    uploadFileService.delete(user.getAvatar());
+                }
                 String newAvatar = uploadFileService.save(dto.getAvatar());
                 user.setAvatar(newAvatar);
             } catch (IOException e) {
-                throw new RuntimeException("Error al guardar el avatar", e);
+                throw new RuntimeException("Error al guardar el avatar: " + e.getMessage(), e);
             }
         }
         

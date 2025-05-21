@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.app.web.enums.NotificationType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,6 +35,8 @@ public class Notification {
 	
 	private String message;
 	private boolean isRead;
+	@Column(name = "created_at")
+    private LocalDateTime createdAt;
 	
 	@Enumerated(EnumType.STRING)
 	private NotificationType type;

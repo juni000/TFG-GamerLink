@@ -1,121 +1,129 @@
 /* styles.css */
 :root {
-    --primary-dark: #121212;
-    --primary-green: #28a745;
-    --secondary-green: #218838;
-    --accent-black: #1e1e1e;
-    --text-light: #f8f9fa;
-    --text-muted: #adb5bd;
+	--primary-dark: #121212;
+	--primary-green: #28a745;
+	--secondary-green: #218838;
+	--accent-black: #1e1e1e;
+	--text-light: #f8f9fa;
+	--text-muted: #adb5bd;
 }
 
 body {
-    background-color: var(--primary-dark);
-    color: var(--text-light);
+	background-color: var(--primary-dark);
+	color: var(--text-light);
 }
 
 .profile-header {
-    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
-    border-radius: 15px;
+	background: linear-gradient(135deg, var(--primary-green) 0%,
+		var(--secondary-green) 100%);
+	border-radius: 15px;
 }
 
 .stat-card {
-    transition: all 0.3s ease;
-    border-left: 4px solid var(--primary-green);
-    background-color: var(--accent-black);
-    color: var(--text-light);
+	transition: all 0.3s ease;
+	border-left: 4px solid var(--primary-green);
+	background-color: var(--accent-black);
+	color: var(--text-light);
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(40, 167, 69, 0.1);
+	transform: translateY(-5px);
+	box-shadow: 0 10px 20px rgba(40, 167, 69, 0.1);
 }
 
 .navbar {
-    background-color: #000 !important;
+	background-color: #000 !important;
 }
 
 .card {
-    background-color: var(--accent-black);
-    color: var(--text-light);
-    border: none;
+	background-color: var(--accent-black);
+	color: var(--text-light);
+	border: none;
 }
 
 .card-header {
-    background-color: #1a1a1a !important;
-    border-bottom: 1px solid #333 !important;
-    color: var(--text-light);
+	background-color: #1a1a1a !important;
+	border-bottom: 1px solid #333 !important;
+	color: var(--text-light);
 }
 
 .list-group-item {
-    background-color: transparent;
-    color: var(--text-light);
-    border-color: #333;
+	background-color: transparent;
+	color: var(--text-light);
+	border-color: #333;
 }
 
 .text-muted {
-    color: var(--text-muted) !important;
+	color: var(--text-muted) !important;
 }
 
 .btn-primary {
-    background-color: var(--primary-green);
-    border-color: var(--primary-green);
+	background-color: var(--primary-green);
+	border-color: var(--primary-green);
 }
 
 .btn-outline-primary {
-    color: var(--primary-green);
-    border-color: var(--primary-green);
+	color: var(--primary-green);
+	border-color: var(--primary-green);
 }
 
 .btn-outline-primary:hover {
-    background-color: var(--primary-green);
-    color: white;
+	background-color: var(--primary-green);
+	color: white;
 }
 
-.bg-primary { background-color: var(--primary-green) !important; }
-.bg-success { background-color: #2e7d32 !important; }
-.bg-warning { background-color: #ff8f00 !important; }
-.bg-info { background-color: #00838f !important; }
+.bg-primary {
+	background-color: var(--primary-green) !important;
+}
+
+.bg-success {
+	background-color: #2e7d32 !important;
+}
+
+.bg-warning {
+	background-color: #ff8f00 !important;
+}
+
+.bg-info {
+	background-color: #00838f !important;
+}
 
 .chat-badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    font-size: 0.7rem;
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	font-size: 0.7rem;
 }
 
 .icon-circle {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .icon-circle-sm {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .badge.bg-light {
-    background-color: #333 !important;
-    color: var(--primary-green) !important;
+	background-color: #333 !important;
+	color: var(--primary-green) !important;
 }
 
 footer {
-    background-color: #000 !important;
+	background-color: #000 !important;
 }
 
-.card,
-.card-body,
-.text-muted,
-.form-label,
-.form-check-label,
-.placeholder {
+.card, .card-body, .text-muted, .form-label, .form-check-label,
+	.placeholder {
 	color: var(--text-light) !important;
 }
 
@@ -192,35 +200,98 @@ body {
 }
 
 .admin-card {
-    background-color: var(--accent-black);
-    border-radius: 10px;
-    border-top: 4px solid var(--primary-green);
+	background-color: var(--accent-black);
+	border-radius: 10px;
+	border-top: 4px solid var(--primary-green);
 }
 
 .table-dark {
-    background-color: #1a1a1a;
+	background-color: #1a1a1a;
 }
 
 .table-dark th {
-    border-color: #333;
+	border-color: #333;
 }
 
 .table-dark td {
-    border-color: #333;
+	border-color: #333;
 }
+
 .edit-card {
-    background-color: var(--accent-black);
-    border-radius: 10px;
-    border-top: 4px solid var(--primary-green);
+	background-color: var(--accent-black);
+	border-radius: 10px;
+	border-top: 4px solid var(--primary-green);
 }
 
 .form-control {
-    background-color: #2a2a2a;
-    border: 1px solid #333;
-    color: var(--text-light);
+	background-color: #2a2a2a;
+	border: 1px solid #333;
+	color: var(--text-light);
 }
 
 .form-control:focus {
-    border-color: var(--primary-green);
-    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+	border-color: var(--primary-green);
+	box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}
+
+.friend-card {
+	transition: all 0.3s ease;
+	border-radius: 10px;
+	overflow: hidden;
+	border: none;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.friend-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.friend-avatar {
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	border-radius: 50%;
+	border: 3px solid #28a745;
+}
+
+.friend-actions .btn {
+	margin: 0 5px;
+	min-width: 100px;
+}
+
+.friend-status {
+	font-size: 0.8rem;
+	color: #6c757d;
+}
+
+.friend-username {
+	font-weight: 600;
+	color: #343a40;
+}
+
+.friend-role {
+	font-size: 0.9rem;
+	color: #6c757d;
+}
+
+.friend-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 20px;
+}
+
+.request-card {
+	border-left: 4px solid #ffc107;
+}
+
+.empty-state {
+	text-align: center;
+	padding: 40px 0;
+}
+
+.empty-state i {
+	font-size: 3rem;
+	color: #6c757d;
+	margin-bottom: 15px;
 }

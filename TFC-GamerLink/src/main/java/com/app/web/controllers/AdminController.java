@@ -37,7 +37,9 @@ public class AdminController {
 	            .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
 	        return "redirect:/home";
 	    }
-	    
+	    User currentUser = userService.getUserDetails();
+        
+        model.addAttribute("user", currentUser);
 	    model.addAttribute("users", userService.getAllUsers());
 	    return "admin/user-list";
 	}
@@ -62,8 +64,11 @@ public class AdminController {
 	        return "redirect:/home";
 	    }
 	    
-	    User user = userService.getUserById(id);
-	    model.addAttribute("user", user);
+	    User userToModify = userService.getUserById(id);
+	    model.addAttribute("userToModify", userToModify);
+	    User currentUser = userService.getUserDetails();
+        model.addAttribute("user", currentUser);
+	    
 	    model.addAttribute("roles", Arrays.asList(RoleList.values())); // Enum de roles
 	    return "admin/edit-user";
 	}

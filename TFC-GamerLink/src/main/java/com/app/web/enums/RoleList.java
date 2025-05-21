@@ -2,7 +2,7 @@ package com.app.web.enums;
 
 public enum RoleList {
 	ROLE_ADMIN("Administrador"),
-    ROLE_USER("Usuario normal");
+    ROLE_USER("Usuario");
     
     private final String displayName;
     
