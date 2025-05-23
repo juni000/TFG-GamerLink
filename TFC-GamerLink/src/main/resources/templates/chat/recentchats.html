@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamerLink - Chats</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar :: navbar(user=${currentUser})"></div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0">
+                            <i class="fas fa-comments me-2 text-gamer-green"></i>Tus Chats
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${friendsWithChats.empty}" class="empty-state">
+                            <i class="fas fa-comment-slash"></i>
+                            <h4>No tienes chats activos</h4>
+                            <p class="text-muted">Inicia una conversación con tus amigos</p>
+                        </div>
+                        
+                        <div th:each="friend : ${friendsWithChats}">
+                            <a th:href="@{'/chat/conversation?user1Id=' + ${currentUser.id} + '&user2Id=' + ${friend.id}}" 
+                               class="text-decoration-none">
+                                <div class="friend-card p-3 d-flex align-items-center">
+                                    <img th:src="${friend.avatar != null} ? '/imagen/uploads/' + ${friend.avatar} : 'https://ui-avatars.com/api/?name=' + ${friend.userName}"
+                                         class="friend-avatar">
+                                    <div>
+                                        <h6 class="mb-1" th:text="${friend.userName}"></h6>
+                                        <small class="text-muted">Haz clic para chatear</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

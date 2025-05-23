@@ -1,6 +1,5 @@
 package com.app.web.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.app.web.dto.UpdateUserDto;
 import com.app.web.entities.User;
+import com.app.web.service.FileChatService;
+import com.app.web.service.FriendshipService;
 import com.app.web.service.ProfileService;
 import com.app.web.service.UserService;
 
@@ -22,14 +23,26 @@ import jakarta.persistence.EntityNotFoundException;
 @RequestMapping("/profile")
 public class ProfileController {
     
-    @Autowired
-    private ProfileService profileService;
-    @Autowired
-    private UserService userService;
+    
+    private final ProfileService profileService;
+    
+    private final UserService userService;
+    
+    private final FriendshipService friendService;
+    private final FileChatService chatService;
+    
+    public ProfileController(ProfileService profileService, UserService userService, FriendshipService friendService, FileChatService chatService) {
+		this.profileService = profileService;
+		this.userService = userService;
+		this.friendService = friendService;
+		this.chatService = chatService;
+	}
     
     @GetMapping("/edit")
     public String getProfilePage( Model model) {
     	User user = userService.getUserDetails();
+    	model.addAttribute("numberChats", chatService.getChatFilesForUser(user.getId()).size());
+    	model.addAttribute("friends", friendService.getUserFriends(user));
     	model.addAttribute("user", user);
 		return "profile";
 	}

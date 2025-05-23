@@ -68,7 +68,8 @@
                                 </p>
                             </div>
                             <div class="friend-actions">
-                                <a th:href="@{'/chat/' + ${friend.id}}" class="btn btn-gamer btn-sm">
+                                <a th:href="@{'/chat/conversation?user1Id=' + ${user.id} + '&user2Id=' + ${friend.id}}" 
+      								 class="btn btn-gamer btn-sm">
                                     <i class="fas fa-comment"></i> Chat
                                 </a>
                             </div>

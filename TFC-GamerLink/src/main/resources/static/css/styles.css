@@ -129,9 +129,7 @@ footer {
 
 ::placeholder {
 	color: #a0a0a0 !important;
-	/* Gris claro */
 	opacity: 1;
-	/* Asegura que no sea transparente en algunos navegadores */
 }
 
 body {
@@ -294,4 +292,39 @@ body {
 	font-size: 3rem;
 	color: #6c757d;
 	margin-bottom: 15px;
+}
+
+/* estilos de la pagina de chats recientes*/
+
+.friend-card {
+    background-color: var(--accent-black);
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-green);
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.friend-card:hover {
+    transform: translateX(5px);
+    background-color: #252525;
+}
+
+.friend-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-green);
+    margin-right: 15px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: var(--text-muted);
+    margin-bottom: 15px;
 }

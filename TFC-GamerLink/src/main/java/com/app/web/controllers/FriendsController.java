@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.app.web.entities.Friendship;
 import com.app.web.entities.User;
 import com.app.web.enums.NotificationType;
+import com.app.web.service.FileChatService;
 import com.app.web.service.FriendshipService;
 import com.app.web.service.NotificationService;
 import com.app.web.service.UserService;
@@ -31,13 +32,16 @@ public class FriendsController {
     private final FriendshipService friendshipService;
     private final UserService userService;
     private final NotificationService notificationService;
+    private final FileChatService chatService;
 
     public FriendsController(FriendshipService friendshipService, 
                               UserService userService,
-                              NotificationService notificationService) {
+                              NotificationService notificationService,
+                              FileChatService chatService) {
         this.friendshipService = friendshipService;
         this.userService = userService;
         this.notificationService = notificationService;
+        this.chatService = chatService;
     }
 
     // Enviar solicitud de amistad
@@ -159,7 +163,7 @@ public class FriendsController {
     @GetMapping("/friends")
     public String friends(Model model, Principal principal) {
         User currentUser = userService.getUserDetails();
-        
+        model.addAttribute("numberChats", chatService.getChatFilesForUser(currentUser.getId()).size());
         model.addAttribute("user", currentUser);
         model.addAttribute("userRole", currentUser.getRole().getName().toString());
         model.addAttribute("friends", friendshipService.getUserFriends(currentUser));

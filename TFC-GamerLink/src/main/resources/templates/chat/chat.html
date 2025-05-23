@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamerLink - Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .chat-container {
+            background-color: var(--accent-black);
+            border-radius: 10px;
+            border-top: 4px solid var(--primary-green);
+        }
+        
+        .chat-header {
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+            padding: 15px 20px;
+        }
+        
+        .chat-messages {
+            height: 500px;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            position: relative;
+        }
+        
+        .sent {
+            background-color: rgba(40, 167, 69, 0.2);
+            margin-left: auto;
+            border-bottom-right-radius: 0;
+        }
+        
+        .received {
+            background-color: rgba(173, 181, 189, 0.2);
+            margin-right: auto;
+            border-bottom-left-radius: 0;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+            color: var(--primary-green);
+            font-size: 0.9rem;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #333;
+            background-color: #1a1a1a;
+        }
+        
+        .chat-input input {
+            background-color: #2a2a2a;
+            border: 1px solid #333;
+            color: var(--text-light);
+        }
+        
+        .chat-input input:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+        }
+        
+        .friend-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-green);
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar :: navbar(user=${currentUser})"></div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="chat-container shadow-sm">
+                    <!-- Chat Header -->
+                    <div class="chat-header d-flex align-items-center">
+                        <img th:src="${friend.avatar != null} ? '/imagen/uploads/' + ${friend.avatar} : 'https://ui-avatars.com/api/?name=' + ${friend.userName}"
+                             class="friend-avatar">
+                        <div>
+                            <h5 class="mb-0" th:text="${friend.userName}"></h5>
+                            <small class="text-muted">En línea</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chatMessages">
+                        <div th:each="message : ${messages}">
+                            <div th:classappend="${message.senderId == currentUser.id} ? 'sent' : 'received'" 
+                                 class="message">
+                                <div th:if="${message.senderId != currentUser.id}" 
+                                     class="message-sender" 
+                                     th:text="${friend.userName}"></div>
+                                <div th:text="${message.content}"></div>
+                                <div class="message-time" 
+                                     th:text="${#temporals.format(message.timestamp, 'dd/MM HH:mm')}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Input -->
+                    <div class="chat-input">
+                        <form th:action="@{/chat/send}" method="post" class="d-flex">
+                            <input type="hidden" name="senderId" th:value="${currentUser.id}">
+                            <input type="hidden" name="receiverId" th:value="${friend.id}">
+                            <input type="text" name="content" class="form-control me-2" placeholder="Escribe un mensaje..." required>
+                            <button type="submit" class="btn btn-gamer">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Auto-scroll to bottom of chat -->
+    <script>
+        window.onload = function() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+    </script>
+</body>
+</html>

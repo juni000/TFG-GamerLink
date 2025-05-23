@@ -1,6 +1,7 @@
 package com.app.web.controllers;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.app.web.dto.UserEditDto;
 import com.app.web.entities.User;
 import com.app.web.enums.RoleList;
+import com.app.web.service.FileChatService;
+import com.app.web.service.FriendshipService;
 import com.app.web.service.UserService;
 
 @Controller
@@ -24,9 +27,13 @@ import com.app.web.service.UserService;
 public class AdminController {
 
 	private final UserService userService;
+    private final FileChatService chatService;
+	private final FriendshipService friendService;
 	
-	public AdminController(UserService userService) {
+	public AdminController(UserService userService, FriendshipService friendService, FileChatService chatService) {
 		this.userService = userService;
+		this.friendService = friendService;
+		this.chatService = chatService;
 	}
 	
 	@GetMapping("/admin/users")
@@ -38,7 +45,8 @@ public class AdminController {
 	        return "redirect:/home";
 	    }
 	    User currentUser = userService.getUserDetails();
-        
+        model.addAttribute("numberChats", chatService.getChatFilesForUser(currentUser.getId()).size());
+        model.addAttribute("friends", friendService.getUserFriends(currentUser));
         model.addAttribute("user", currentUser);
 	    model.addAttribute("users", userService.getAllUsers());
 	    return "admin/user-list";
@@ -68,7 +76,8 @@ public class AdminController {
 	    model.addAttribute("userToModify", userToModify);
 	    User currentUser = userService.getUserDetails();
         model.addAttribute("user", currentUser);
-	    
+        model.addAttribute("numberChats", chatService.getChatFilesForUser(currentUser.getId()).size());
+        model.addAttribute("friends", friendService.getUserFriends(currentUser));
 	    model.addAttribute("roles", Arrays.asList(RoleList.values())); // Enum de roles
 	    return "admin/edit-user";
 	}

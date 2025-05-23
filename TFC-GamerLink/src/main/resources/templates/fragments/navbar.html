@@ -15,9 +15,15 @@
 					<span class="chat-badge badge bg-danger rounded-pill">3</span>
 				</a>
 			</div>
+			<div class="position-relative me-3">
+				<a href="/chat/recentchats" class="btn btn-outline-light position-relative" title="Chats Recientes">
+					<i class="fas fa-comment-alt me-1"></i> Chats
+					<span class="chat-badge badge bg-danger rounded-pill" th:text="${numberChats}">0</span>
+				</a>
+			</div>
 			<div class="position-relative">
 				<a href="/friends" class="btn btn-outline-light position-relative" title="Chat con Amigos">
-					<i class="fas fa-user-friends me-1" ></i> Amigos
+					<i class="fas fa-user-friends me-1"></i> Amigos
 					<span class="chat-badge badge bg-danger rounded-pill" th:text="${friends.size()}">0</span>
 				</a>
 			</div>
@@ -48,5 +54,4 @@
 	</div>
 </nav>
 </body>
-
 </html>
