@@ -4,6 +4,7 @@ public enum NotificationType {
 	FRIEND_REQUEST("Solicitud de amistad"),
 	FRIEND_REQUEST_ACCEPTED("Solicitud de amistad aceptada"),
 	FRIEND_REQUEST_DECLINED("Solicitud de amistad rechazada"),
+	SQUAD_SEARCH("Búsqueda de escuadrón"),
 	MESSAGE("Mensaje"),
 	COMMENT("Comentario"),
 	GROUP_INVITATION("Invitación a grupo"),

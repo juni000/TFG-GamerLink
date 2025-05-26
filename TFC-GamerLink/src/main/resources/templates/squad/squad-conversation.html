@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamerLink - Chat de Escuadrón</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .chat-container {
+            background-color: var(--accent-black);
+            border-radius: 10px;
+            border-top: 4px solid var(--primary-green);
+        }
+        
+        .squad-header {
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-messages {
+            height: 500px;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            position: relative;
+        }
+        
+        .sent {
+            background-color: rgba(40, 167, 69, 0.2);
+            margin-left: auto;
+            border-bottom-right-radius: 0;
+        }
+        
+        .received {
+            background-color: rgba(173, 181, 189, 0.2);
+            margin-right: auto;
+            border-bottom-left-radius: 0;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+            color: var(--primary-green);
+            font-size: 0.9rem;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #333;
+            background-color: #1a1a1a;
+        }
+        
+        .member-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-green);
+            margin-right: 5px;
+        }
+        
+        .members-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .game-icon {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar"></div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="chat-container shadow-sm">
+                    <!-- Chat Header -->
+                    <div class="squad-header">
+                        <div class="d-flex align-items-center">
+                            <img th:src="'/imagen/uploads/' + ${squadChat.game.logoUrl}" class="game-icon">
+                            <div>
+                                <h5 class="mb-0" th:text="${squadChat.name}"></h5>
+                                <small class="text-muted" th:text="${squadChat.game.name}"></small>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-gamer" data-bs-toggle="modal" 
+                                data-bs-target="#squadInfoModal">
+                            <i class="fas fa-info-circle"></i> Info
+                        </button>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chatMessages">
+                        <div th:each="message : ${messages}">
+                            <div th:classappend="${message.senderId == user.id} ? 'sent' : 'received'" 
+                                 class="message">
+                                <div th:if="${message.senderId != currentUser.id && message.senderId != 'system'}" 
+								     class="message-sender" 
+								     th:text="${userNames[message.senderId]}"></div>
+                                <div th:text="${message.content}"></div>
+                                <div class="message-time" 
+                                     th:text="${#temporals.format(message.timestamp, 'dd/MM HH:mm')}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Input -->
+                    <div class="chat-input">
+                        <form th:action="@{'/squad/' + ${squadChat.id} + '/send'}" method="post" class="d-flex">
+                            <input type="hidden" name="senderId" th:value="${user.id}">
+                            <input type="text" name="content" class="form-control me-2" placeholder="Escribe un mensaje..." required>
+                            <button type="submit" class="btn btn-gamer">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Squad Info Modal -->
+    <div class="modal fade" id="squadInfoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title">Información del Escuadrón</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <h6>Juego:</h6>
+                        <div class="d-flex align-items-center">
+                            <img th:src="${squadChat.game.logoUrl}" class="game-icon">
+                            <span th:text="${squadChat.game.name}"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6>Miembros:</h6>
+                        <div class="members-container">
+                            <div th:each="member : ${squadChat.members}" class="d-flex align-items-center">
+                                <img th:src="${member.avatar != null} ? '/imagen/uploads/' + ${member.avatar} : 'https://ui-avatars.com/api/?name=' + ${member.userName}"
+                                     class="member-avatar">
+                                <span th:text="${member.userName}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                        <form th:action="@{'/squad/' + ${squadChat.id} + '/rename'}" method="post">
+                            <div class="mb-3">
+                                <label for="squadName" class="form-label">Nombre del escuadrón</label>
+                                <input type="text" class="form-control" id="squadName" name="newName" th:value="${squadChat.name}">
+                            </div>
+                            <button type="submit" class="btn btn-gamer">Cambiar nombre</button>
+                        </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Auto-scroll to bottom of chat -->
+    <script>
+        window.onload = function() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+    </script>
+</body>
+</html>

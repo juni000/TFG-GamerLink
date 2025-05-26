@@ -84,6 +84,11 @@
             border: 2px solid var(--primary-green);
             margin-right: 10px;
         }
+        .refresh-btn {
+            margin-right: 10px;
+            align-self: center;
+        }
+        
     </style>
 </head>
 <body>
@@ -103,8 +108,9 @@
                             <h5 class="mb-0" th:text="${friend.userName}"></h5>
                             <small class="text-muted">En línea</small>
                         </div>
+
                     </div>
-                    
+
                     <!-- Chat Messages -->
                     <div class="chat-messages" id="chatMessages">
                         <div th:each="message : ${messages}">
@@ -122,7 +128,13 @@
                     
                     <!-- Chat Input -->
                     <div class="chat-input">
+						
                         <form th:action="@{/chat/send}" method="post" class="d-flex">
+                            <!-- Botón de recarga -->
+			                <a th:href="@{'/chat/conversation?user1Id=' + ${currentUser.id} + '&user2Id=' + ${friend.id}}" 
+			                   class="btn btn-outline-gamer btn-sm refresh-btn"
+			                   title="Recargar mensajes">
+			                    <i class="fas fa-sync-alt"></i>			                </a>
                             <input type="hidden" name="senderId" th:value="${currentUser.id}">
                             <input type="hidden" name="receiverId" th:value="${friend.id}">
                             <input type="text" name="content" class="form-control me-2" placeholder="Escribe un mensaje..." required>

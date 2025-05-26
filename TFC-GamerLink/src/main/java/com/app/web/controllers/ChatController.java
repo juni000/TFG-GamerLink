@@ -2,18 +2,23 @@ package com.app.web.controllers;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.web.entities.ChatMessage;
+import com.app.web.entities.SquadChat;
 import com.app.web.entities.User;
 import com.app.web.service.FileChatService;
 import com.app.web.service.FriendshipService;
+import com.app.web.service.SquadChatService;
 import com.app.web.service.UserService;
 
 @Controller
@@ -23,10 +28,12 @@ public class ChatController {
     private final FileChatService chatService;
     private final FriendshipService friendService;
     private final UserService userService;
-    public ChatController(FileChatService chatService, FriendshipService friendService, UserService userService) {
+    private final SquadChatService squadChatService;
+    public ChatController(FileChatService chatService, FriendshipService friendService, UserService userService, SquadChatService squadChatService) {
 		this.chatService = chatService;
 		this.friendService = friendService;
 		this.userService = userService;
+		this.squadChatService = squadChatService;
 	}
     
     @PostMapping("/send")

@@ -11,7 +11,53 @@
 <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-   /* Estilos para notificaciones */
+   	:root {
+	--primary-dark: #121212;
+	--primary-green: #28a745;
+	--secondary-green: #218838;
+	--accent-black: #1e1e1e;
+	--text-light: #f8f9fa;
+	--text-muted: #adb5bd;
+	}
+	
+	body {
+		background-color: var(--primary-dark);
+		color: var(--text-light);
+	}
+	
+	.profile-header {
+		background: linear-gradient(135deg, var(--primary-green) 0%,
+			var(--secondary-green) 100%);
+		border-radius: 15px;
+	}
+	
+	.stat-card {
+		transition: all 0.3s ease;
+		border-left: 4px solid var(--primary-green);
+		background-color: var(--accent-black);
+		color: var(--text-light);
+	}
+	
+	.stat-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 10px 20px rgba(40, 167, 69, 0.1);
+	}
+	
+	.navbar {
+		background-color: #000 !important;
+	}
+	
+	.card {
+		background-color: var(--accent-black);
+		color: var(--text-light);
+		border: none;
+	}
+	
+	.card-header {
+		background-color: #1a1a1a !important;
+		border-bottom: 1px solid #333 !important;
+		color: var(--text-light);
+	}
     .notification-card {
         transition: all 0.3s ease;
         background-color: var(--accent-black);
@@ -256,13 +302,11 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <a href="#" class="btn btn-primary w-100 mb-3"> <i
+                        <a href="/squad/search" class="btn btn-primary w-100 mb-3"> <i
                             class="fas fa-plus me-2"></i>Nueva Partida
                         </a> <a href="/friends" class="btn btn-outline-primary w-100 mb-3"> <i
                             class="fas fa-user-friends me-2"></i>Buscar Amigos
-                        </a> <a href="/notifications" class="btn btn-outline-secondary w-100"> <i
-                            class="fas fa-bell me-2"></i>Ver Notificaciones
-                        </a>
+                        </a> 
                     </div>
                 </div>
             </div>

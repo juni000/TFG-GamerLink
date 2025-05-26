@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamerLink - Buscar Escuadrón</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        :root {
+            --primary-dark: #121212;
+            --primary-green: #28a745;
+            --secondary-green: #218838;
+            --accent-black: #1e1e1e;
+            --text-light: #f8f9fa;
+            --text-muted: #adb5bd;
+        }
+        
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+        }
+        
+        .card {
+            background-color: var(--accent-black);
+            color: var(--text-light);
+            border: none;
+            border-top: 4px solid var(--primary-green);
+        }
+        
+        .card-header {
+            background-color: #1a1a1a !important;
+            border-bottom: 1px solid #333 !important;
+            color: var(--text-light);
+        }
+        
+        .game-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 15px;
+        }
+        
+        .friend-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-green);
+            margin-right: 10px;
+        }
+        
+        .btn-gamer {
+            background-color: var(--primary-green);
+            border: none;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-gamer:hover {
+            background-color: var(--secondary-green);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-gamer {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+        }
+        
+        .btn-outline-gamer:hover {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        .game-card input[type="radio"]:checked + .d-flex {
+		    border-left: 3px solid var(--primary-green);
+		    background-color: rgba(40, 167, 69, 0.1);
+		}
+		
+		/* Estilos base y hover */
+		.game-card {
+		    display: block;
+		    cursor: pointer;
+		    border-left: 3px solid transparent;
+		    transition: all 0.3s ease;
+		}
+		
+		.game-card .d-flex {
+		    border-left: 3px solid transparent;
+		    transition: all 0.3s ease;
+		}
+		
+		.game-card:hover .d-flex {
+		    transform: translateY(-3px);
+		    border-left-color: var(--primary-green);
+		}
+		.form-select {
+    background-color: var(--accent-black) !important;
+    color: var(--text-light) !important;
+    border-color: #333 !important;
+	}
+	
+	.form-select:focus {
+	    border-color: var(--primary-green) !important;
+	    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25) !important;
+	}
+	
+	/* Estilos para las opciones */
+	option {
+	    background-color: var(--accent-black);
+	    color: var(--text-light);
+	    padding: 8px 12px;
+	}
+	
+	/* Estilo para las opciones seleccionadas */
+	option:checked {
+	    background-color: var(--primary-green) !important;
+	    color: var(--primary-dark) !important;
+	}
+	
+	/* Estilo para el hover de las opciones */
+	option:hover {
+	    background-color: var(--primary-green) !important;
+	    color: var(--primary-dark) !important;
+	}
+	
+	/* Estilo para el texto de ayuda */
+	.text-muted {
+	    color: var(--text-muted) !important;
+	    font-size: 0.8rem;
+	}
+	
+		
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div th:replace="fragments/navbar :: navbar(user=${currentUser})"></div>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                	<div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+					    <i class="fas fa-exclamation-circle me-2"></i>
+					    <span th:text="${error}"></span>
+					    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+					<div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+					    <i class="fas fa-check-circle me-2"></i>
+					    <span th:text="${success}"></span>
+					    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-users me-2 text-gamer"></i>Buscar Escuadrón
+                        </h5>
+                    </div>
+                    <form th:action="@{/squad/search}" method="post">
+                    <div class="mb-4">
+					    <h6 class="mb-3"><i class="fas fa-gamepad me-2"></i>1. Selecciona un juego</h6>
+					    <div class="row">
+						    <div th:each="game, stat : ${games}" class="col-md-6 mb-3">
+							    <label class="game-card p-3e">
+							        <input type="radio" name="gameId" th:value="${game.id}" 
+							               th:checked="${stat.first} ? 'checked' : null" class="d-none">
+							        <div class="d-flex align-items-center">
+							            <img th:src="'/imagen/uploads/' + ${game.logoUrl}" 
+							                 class="game-logo" alt="Game Logo">
+							            <div>
+							                <h6 class="mb-1" th:text="${game.name}"></h6>
+							                <small class="text-muted" th:text="${game.description} ?: 'Sin descripción'"></small>
+							            </div>
+							        </div>
+							    </label>
+							</div>
+					    </div>
+					</div>
+                            <!-- Paso 2: Seleccionar Tamaño del Equipo -->
+                            <div class="mb-4">
+                                <h6 class="mb-3"><i class="fas fa-user-friends me-2"></i>2. Tamaño del equipo</h6>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="teamSize" id="size2" value="2" autocomplete="off">
+                                    <label class="btn btn-outline-gamer" for="size2">2</label>
+                                    
+                                    <input type="radio" class="btn-check" name="teamSize" id="size3" value="3" autocomplete="off">
+                                    <label class="btn btn-outline-gamer" for="size3">3</label>
+                                    
+                                    <input type="radio" class="btn-check" name="teamSize" id="size4" value="4" autocomplete="off" checked>
+                                    <label class="btn btn-outline-gamer" for="size4">4</label>
+                                    
+                                    <input type="radio" class="btn-check" name="teamSize" id="size5" value="5" autocomplete="off">
+                                    <label class="btn btn-outline-gamer" for="size5">5</label>
+                                    
+                                    <input type="radio" class="btn-check" name="teamSize" id="size6" value="6" autocomplete="off">
+                                    <label class="btn btn-outline-gamer" for="size6">6</label>
+                                </div>
+                            </div>
+                            
+                            <!-- Paso 3: Invitar Amigos (Opcional) -->
+                            <div class="mb-4">
+							    <h6 class="mb-3"><i class="fas fa-user-plus me-2 text-gamer"></i>3. Invitar amigos (opcional)</h6>
+							    <select name="friends" class="form-select bg-dark text-light border-secondary" multiple style="height: auto;">
+							        <option th:each="friend : ${friends}" 
+							                th:value="${friend.id}"
+							                th:text="${friend.userName}"
+							                class="bg-dark text-light">
+							        </option>
+							    </select>
+							    <small class="text-muted">Mantén presionada la tecla Ctrl (Windows) o Comando (Mac) para seleccionar varios amigos</small>
+							</div>
+                            
+                            <!-- Botón de búsqueda -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-gamer btn-lg">
+                                    <i class="fas fa-search me-2"></i> Buscar Escuadrón
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Escuadrones Activos -->
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-clock me-2"></i>Tus búsquedas activas
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${activeSearches.isEmpty()}" class="text-center py-3">
+                            <i class="fas fa-users-slash fa-2x text-muted mb-3"></i>
+                            <p class="text-muted">No tienes búsquedas activas</p>
+                        </div>
+                        
+                        <div th:each="search : ${activeSearches}" class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1" th:text="${search.game.name} + ' - ' + ${search.actualSize} + '/' + ${search.searchSize} + ' jugadores'"></h6>
+                                    <small class="text-muted" th:text="'Búsqueda iniciada: ' + ${#temporals.format(search.createdAt, 'dd/MM HH:mm')}"></small>
+                                </div>
+                                <a th:href="@{'/squad/cancel/' + ${search.id}}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   
+</body>
+</html>
