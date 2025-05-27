@@ -56,8 +56,12 @@ public class SquadChatController {
         Map<String, String> userNames = new HashMap<>();
         for (ChatMessage message : messages) {
 			if (!userNames.containsKey(message.getSenderId())) {
+				if(message.getSenderId() == null || message.getSenderId().contains("system") ) {
+					
+				}else {
 				User sender = userService.getUserById(message.getSenderId());
 				userNames.put(message.getSenderId(), sender != null ? sender.getUserName() : "Desconocido");
+				}
 			}
 		}
         model.addAttribute("userNames", userNames);

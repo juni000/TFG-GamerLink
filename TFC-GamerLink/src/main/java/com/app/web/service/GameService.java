@@ -41,9 +41,4 @@ public class GameService {
     public void deleteGame(Integer id) {
         gameRepository.deleteById(id);
     }
-
-    // Buscar juegos por nombre (búsqueda parcial)
-    public List<Game> searchGamesByName(String name) {
-        return gameRepository.findByNameContainingIgnoreCase(name);
-    }
 }

@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.app.web.entities.Notification;
+import com.app.web.entities.SquadChat;
 import com.app.web.entities.User;
 import com.app.web.service.FileChatService;
 import com.app.web.service.FriendshipService;
 import com.app.web.service.NotificationService;
+import com.app.web.service.SquadChatService;
 import com.app.web.service.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -29,14 +31,16 @@ public class HomeController {
 	private final NotificationService notificationService;
 	private final FriendshipService friendService;
     private final FileChatService chatService;
+    private final SquadChatService squadChatService;
 
 
     public HomeController(UserService userService, NotificationService notificationService,
-						  FriendshipService friendService, FileChatService chatService) {
+						  FriendshipService friendService, FileChatService chatService, SquadChatService squadChatService) {
         this.userService = userService;
         this.notificationService = notificationService;
         this.friendService = friendService;
         this.chatService = chatService;
+        this.squadChatService = squadChatService;
     }
 	
 	@GetMapping("/home")
@@ -45,6 +49,8 @@ public class HomeController {
         List<Notification> notifications = notificationService.getUserAllNotifications(user);
         int unreadCount = notificationService.getUnreadCount(user);
         List<User> friends = friendService.getUserFriends(user);
+        List<SquadChat> squadChats = squadChatService.getUserSquadChats(user.getId());
+        model.addAttribute("squadChats", squadChats);
         model.addAttribute("numberChats", chatService.getChatFilesForUser(user.getId()).size());
         model.addAttribute("user", user);
         model.addAttribute("notifications", notifications);

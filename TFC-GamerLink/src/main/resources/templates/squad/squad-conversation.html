@@ -122,9 +122,12 @@
                         <div th:each="message : ${messages}">
                             <div th:classappend="${message.senderId == user.id} ? 'sent' : 'received'" 
                                  class="message">
-                                <div th:if="${message.senderId != currentUser.id && message.senderId != 'system'}" 
+                                <div th:if="${message.senderId != user.id && message.senderId != 'system'}" 
 								     class="message-sender" 
 								     th:text="${userNames[message.senderId]}"></div>
+								<div th:if="${message.senderId == 'system'}" 
+									class="message-sender text-muted"
+									th:text="'Sistema'"></div>
                                 <div th:text="${message.content}"></div>
                                 <div class="message-time" 
                                      th:text="${#temporals.format(message.timestamp, 'dd/MM HH:mm')}"></div>
@@ -159,7 +162,7 @@
                     <div class="mb-3">
                         <h6>Juego:</h6>
                         <div class="d-flex align-items-center">
-                            <img th:src="${squadChat.game.logoUrl}" class="game-icon">
+                            <img th:src="'/imagen/uploads/' + ${squadChat.game.logoUrl}" class="game-icon">
                             <span th:text="${squadChat.game.name}"></span>
                         </div>
                     </div>
