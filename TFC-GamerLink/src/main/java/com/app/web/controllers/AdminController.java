@@ -1,6 +1,7 @@
 package com.app.web.controllers;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,16 +19,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.app.web.dto.UserEditDto;
 import com.app.web.entities.Game;
+import com.app.web.entities.SquadChat;
 import com.app.web.entities.User;
 import com.app.web.enums.RoleList;
 import com.app.web.service.FileChatService;
 import com.app.web.service.FriendshipService;
 import com.app.web.service.GameService;
+import com.app.web.service.SquadChatService;
 import com.app.web.service.UploadFileService;
 import com.app.web.service.UserService;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/admin")
 public class AdminController {
 
 	private final UserService userService;
@@ -35,16 +38,18 @@ public class AdminController {
 	private final FriendshipService friendService;
 	private final GameService gameService;
 	private final UploadFileService uploadFileService;
+	private final SquadChatService squadChatService;
 	
-	public AdminController(UserService userService, FriendshipService friendService, FileChatService chatService, GameService gameService, UploadFileService uploadFileService) {
+	public AdminController(UserService userService, FriendshipService friendService, FileChatService chatService, GameService gameService, UploadFileService uploadFileService, SquadChatService squadChatService) {
 		this.userService = userService;
 		this.friendService = friendService;
 		this.chatService = chatService;
 		this.gameService = gameService;
 		this.uploadFileService = uploadFileService;
+		this.squadChatService = squadChatService;
 	}
 	
-	@GetMapping("/admin/users")
+	@GetMapping("/users")
 	public String userManagement(Model model, 
 	                           @AuthenticationPrincipal UserDetails userDetails) {
 	    // Verificar si el usuario es ADMIN
@@ -53,6 +58,8 @@ public class AdminController {
 	        return "redirect:/home";
 	    }
 	    User currentUser = userService.getUserDetails();
+	    List<SquadChat> squadChats = squadChatService.getUserSquadChats(currentUser.getId());
+        model.addAttribute("squadChats", squadChats);
         model.addAttribute("numberChats", chatService.getChatFilesForUser(currentUser.getId()).size());
         model.addAttribute("friends", friendService.getUserFriends(currentUser));
         model.addAttribute("user", currentUser);
@@ -61,7 +68,7 @@ public class AdminController {
 	    return "admin/user-list";
 	}
 
-	@PostMapping("/admin/users/delete/{id}")
+	@PostMapping("/users/delete/{id}")
 	public String deleteUser(@PathVariable String id,
 	                        @AuthenticationPrincipal UserDetails userDetails) {
 	    if (!userDetails.getAuthorities().stream()
@@ -72,7 +79,7 @@ public class AdminController {
 	    return "redirect:/admin/users?deleteSuccess=true";
 	}
 	
-	@GetMapping("/admin/users/edit/{id}")
+	@GetMapping("/users/edit/{id}")
 	public String editUserForm(@PathVariable String id, Model model,
 	                         @AuthenticationPrincipal UserDetails userDetails) {
 	    // Verificar permisos
@@ -84,6 +91,8 @@ public class AdminController {
 	    User userToModify = userService.getUserById(id);
 	    model.addAttribute("userToModify", userToModify);
 	    User currentUser = userService.getUserDetails();
+	    List<SquadChat> squadChats = squadChatService.getUserSquadChats(currentUser.getId());
+        model.addAttribute("squadChats", squadChats);
         model.addAttribute("user", currentUser);
         model.addAttribute("numberChats", chatService.getChatFilesForUser(currentUser.getId()).size());
         model.addAttribute("friends", friendService.getUserFriends(currentUser));
@@ -91,7 +100,7 @@ public class AdminController {
 	    return "admin/edit-user";
 	}
 
-	@PostMapping("/admin/users/edit/{id}")
+	@PostMapping("/users/edit/{id}")
 	public String updateUser(@PathVariable String id,
 	                       @ModelAttribute("user") UserEditDto userDto,
 	                       BindingResult result,

@@ -39,7 +39,6 @@ public class AuthService {
 				password);
 		Authentication authResult = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 		SecurityContextHolder.getContext().setAuthentication(authResult);
-		System.out.println("Authentication successful for user: " + username);
 		return jwtUtil.generateToken(authResult);
 	}
 

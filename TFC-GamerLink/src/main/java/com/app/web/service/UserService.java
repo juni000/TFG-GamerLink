@@ -102,5 +102,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
     }
+    
+    public void addRole(Role role) {
+    	if (!roleRepository.existsByName(role.getName())) {
+    		roleRepository.save(role);
+		}
+	}
 
 }

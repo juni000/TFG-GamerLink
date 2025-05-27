@@ -103,12 +103,17 @@ public class SquadSearchService {
 						NotificationType.SQUAD_SEARCH);
 			}
 		} else {
-			notificationService.createNotification(
-					userService.getUserById(squad.getPlayer1()), 
-					((friendIds.size() == 0 ? "Se ha unido " : "Se han unido ") 
-							+ (1 + friendIds.size()) +  (friendIds.size() == 0 ? "jugador" : "jugadores") 
-							+  " a tu escuadrón de " + squad.getGame().getName() + "."),
-					NotificationType.SQUAD_SEARCH);
+			if(friendIds == null) {
+				notificationService.createNotification(
+						userService.getUserById(squad.getPlayer1()), 
+						"Se ha unido " + (squad.getActualSize() - 1) + " jugador a tu escuadrón de " + squad.getGame().getName() + ".",
+						NotificationType.SQUAD_SEARCH);
+			} else {
+				notificationService.createNotification(
+						userService.getUserById(squad.getPlayer1()), 
+						"Se han unido " + (squad.getActualSize() - 1) + " jugadores a tu escuadrón de " + squad.getGame().getName() + ".",
+						NotificationType.SQUAD_SEARCH);
+			}
 		}
 
         squadSearchRepository.save(squad);

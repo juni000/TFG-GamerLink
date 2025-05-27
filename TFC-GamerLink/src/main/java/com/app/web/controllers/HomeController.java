@@ -25,7 +25,7 @@ import com.app.web.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/home")
 public class HomeController {
 	private final UserService userService;
 	private final NotificationService notificationService;
@@ -74,7 +74,7 @@ public class HomeController {
         } catch (SecurityException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
-        return "redirect:/home";
+        return "redirect:/home/home";
     }
 
     @PostMapping("/notifications/markAllAsRead")
@@ -83,6 +83,6 @@ public class HomeController {
         User user = userService.getUserDetails();
         notificationService.markAllAsRead(user);
         redirectAttributes.addFlashAttribute("success", "Todas las notificaciones marcadas como leídas");
-        return "redirect:/home";
+        return "redirect:/home/home";
     }
 }

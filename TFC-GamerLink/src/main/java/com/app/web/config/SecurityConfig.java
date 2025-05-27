@@ -41,7 +41,7 @@ public class SecurityConfig {
                         )
                 .formLogin(form -> form
                         .loginPage("/auth/login")  // Página de login Thymeleaf
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/home/home", true)
                     )
                 .httpBasic(Customizer.withDefaults())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtEntryPoint()))

@@ -3,7 +3,7 @@
 <!-- Navbar -->
 <nav th:fragment="navbar(user)" class="navbar navbar-expand-lg navbar-dark shadow-sm">
 	<div class="container">
-		<a class="navbar-brand fw-bold" href="/home">
+		<a class="navbar-brand fw-bold" href="/home/home">
 			<i class="fas fa-gamepad me-2 text-gamer-green"></i>GamerLink
 		</a>
 
@@ -12,7 +12,7 @@
 			<div class="position-relative me-3">
 				<a href="/squad/list" class="btn btn-outline-light position-relative" title="Chat Global">
 					<i class="fas fa-comments me-1"></i> Chats de Equipo
-					<span class="chat-badge badge bg-danger rounded-pill">3</span>
+					<span class="chat-badge badge bg-danger rounded-pill" th:text="${squadChats.size()}" >0</span>
 				</a>
 			</div>
 			<div class="position-relative me-3">
@@ -22,7 +22,7 @@
 				</a>
 			</div>
 			<div class="position-relative">
-				<a href="/friends" class="btn btn-outline-light position-relative" title="Chat con Amigos">
+				<a href="/friends/friends" class="btn btn-outline-light position-relative" title="Chat con Amigos">
 					<i class="fas fa-user-friends me-1"></i> Amigos
 					<span class="chat-badge badge bg-danger rounded-pill" th:text="${friends.size()}">0</span>
 				</a>

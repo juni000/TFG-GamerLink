@@ -2,13 +2,10 @@ package com.app.web.controllers;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,6 +52,8 @@ public class ChatController {
         
         List<ChatMessage> messages = chatService.getChatHistory(user1Id, user2Id);
         User currentUser = userService.getUserDetails();
+        List<SquadChat> squadChats = squadChatService.getUserSquadChats(currentUser.getId());
+        model.addAttribute("squadChats", squadChats);
         model.addAttribute("numberChats", chatService.getChatFilesForUser(currentUser.getId()).size());
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("friends", friendService.getUserFriends(currentUser));
@@ -79,6 +78,8 @@ public class ChatController {
         
         // Obtener amigos con los que tiene conversación
         List<User> friendsWithChats = chatService.getFriendsWithChats(currentUser, chatFiles);
+        List<SquadChat> squadChats = squadChatService.getUserSquadChats(currentUser.getId());
+        model.addAttribute("squadChats", squadChats);
         model.addAttribute("numberChats", chatService.getChatFilesForUser(currentUser.getId()).size());
         model.addAttribute("friendsWithChats", friendsWithChats);
         model.addAttribute("currentUser", currentUser);

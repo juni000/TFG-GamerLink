@@ -17,10 +17,10 @@ public class LandingController {
     public LandingController(UserService userService) {
         this.userService = userService;
     }
-//	@GetMapping("/")
-//	public String index(Model model, Principal principal) {
-//		return "landing";
-//	}
+	@GetMapping("/")
+	public String index(Model model, Principal principal) {
+		return "landing";
+	}
 	
 	
 	@GetMapping("/landing")

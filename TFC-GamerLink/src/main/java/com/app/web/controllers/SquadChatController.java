@@ -64,6 +64,8 @@ public class SquadChatController {
 				}
 			}
 		}
+        List<SquadChat> squadChats = squadChatService.getUserSquadChats(currentUser.getId());
+        model.addAttribute("squadChats", squadChats);
         model.addAttribute("userNames", userNames);
         model.addAttribute("squadChat", squadChat);
         model.addAttribute("messages", messages);
@@ -110,7 +112,6 @@ public class SquadChatController {
     public String listSquadChats(Model model) {
     	User currentUser = userService.getUserDetails();
         List<SquadChat> squadChats = squadChatService.getUserSquadChats(currentUser.getId());
-        
         model.addAttribute("squadChats", squadChats);
         model.addAttribute("user", currentUser);
         model.addAttribute("friends", friendService.getUserFriends(currentUser));

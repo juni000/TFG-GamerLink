@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.app.web.entities.SquadChat;
 import com.app.web.entities.SquadSearch;
 import com.app.web.entities.SquadSearchResult;
 import com.app.web.entities.User;
 import com.app.web.service.FileChatService;
 import com.app.web.service.FriendshipService;
 import com.app.web.service.GameService;
+import com.app.web.service.SquadChatService;
 import com.app.web.service.SquadSearchService;
 import com.app.web.service.UserService;
 
@@ -31,18 +33,24 @@ public class SquadSearchController {
 	    private final FileChatService chatService;
 		private final FriendshipService friendService;
 		private final GameService gameService;
-		public SquadSearchController(SquadSearchService squadSearchService, UserService userService, FriendshipService friendService, GameService gameService, FileChatService chatService) {
+		private final SquadChatService squadChatService;
+
+	    // Constructor para inyección de dependencias
+		public SquadSearchController(SquadSearchService squadSearchService, UserService userService, FriendshipService friendService, GameService gameService, FileChatService chatService, SquadChatService squadChatService) {
 	        this.squadSearchService = squadSearchService;
 	        this.userService = userService;
 	        this.friendService = friendService;
 	        this.gameService = gameService;
 	        this.chatService = chatService;
+	        this.squadChatService = squadChatService;
 	    }
 
 	    // Mostrar formulario de búsqueda
 	    @GetMapping("/search")
 	    public String showSearchForm(Model model) {
 	        User currentUser = userService.getUserDetails();
+	        List<SquadChat> squadChats = squadChatService.getUserSquadChats(currentUser.getId());
+	        model.addAttribute("squadChats", squadChats);
 	        model.addAttribute("currentUser", currentUser);
 	        model.addAttribute("numberChats", chatService.getChatFilesForUser(currentUser.getId()).size());
 	        model.addAttribute("games", gameService.getAllGames());
@@ -75,15 +83,6 @@ public class SquadSearchController {
 	        return "redirect:/squad/search";
 	    }
 
-	    // Ver escuadrones activos del usuario
-	    @GetMapping("/my-squads")
-	    public String viewMySquads(Model model) {
-	        User currentUser = userService.getUserDetails();
-	        List<SquadSearch> squads = squadSearchService.getUserActiveSquads(currentUser.getId());
-	        model.addAttribute("squads", squads);
-	        return "squad/my-squads";
-	    }
-
 	    // Cancelar búsqueda de escuadrón
 	    @PostMapping("/cancel/{squadId}")
 	    public String cancelSquadSearch(@PathVariable Integer squadId, RedirectAttributes redirectAttributes) {
@@ -96,17 +95,6 @@ public class SquadSearchController {
 	            redirectAttributes.addFlashAttribute("error", "No se pudo cancelar la búsqueda");
 	        }
 
-	        return "redirect:/squad/my-squads";
-	    }
-
-	    // Ver detalles de un escuadrón
-	    @GetMapping("/view/{squadId}")
-	    public String viewSquad(@PathVariable Integer squadId, Model model) {
-	        Optional<SquadSearch> squad = squadSearchService.getSquadById(squadId);
-	        if (squad.isPresent()) {
-	            model.addAttribute("squad", squad.get());
-	            return "squad/view";
-	        }
 	        return "redirect:/squad/my-squads";
 	    }
 }

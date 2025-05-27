@@ -7,7 +7,7 @@
 <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="../css/styles.css">
 <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -243,7 +243,7 @@
 		                <i class="fas fa-bell me-2 text-gamer-green"></i>Tus Notificaciones
 		                <span th:if="${unreadCount > 0}" class="badge bg-danger ms-2" th:text="${unreadCount}"></span>
 		            </h5>
-		            <form th:action="@{/notifications/markAllAsRead}" method="post">
+		            <form th:action="@{/home/notifications/markAllAsRead}" method="post">
 		                <button type="submit" class="btn btn-sm btn-gamer">
 		                    <i class="fas fa-check-circle me-1"></i> Marcar todas como leídas
 		                </button>
@@ -279,7 +279,7 @@
 		                            </div>
 		                            <div class="d-flex justify-content-between align-items-center mt-2">
 		                                <small class="text-muted" th:text="${notification.type.getName()}"></small>
-		                                <form th:if="${!notification.read}" th:action="@{'/notifications/markAsRead/' + ${notification.id}}" method="post">
+		                                <form th:if="${!notification.read}" th:action="@{'/home/notifications/markAsRead/' + ${notification.id}}" method="post">
 		                                    <button type="submit" class="btn btn-sm notification-mark-btn">
 		                                        <i class="fas fa-check me-1"></i> Marcar como leída
 		                                    </button>
@@ -304,7 +304,7 @@
                     <div class="card-body">
                         <a href="/squad/search" class="btn btn-primary w-100 mb-3"> <i
                             class="fas fa-plus me-2"></i>Nueva Partida
-                        </a> <a href="/friends" class="btn btn-outline-primary w-100 mb-3"> <i
+                        </a> <a href="/friends/friends" class="btn btn-outline-primary w-100 mb-3"> <i
                             class="fas fa-user-friends me-2"></i>Buscar Amigos
                         </a> 
                     </div>
